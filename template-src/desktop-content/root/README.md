@@ -33,6 +33,8 @@ Skills/                   # скиллы для ИИ-агентов
 
 - **DI**: без внедрения зависимостей, `Microsoft.Extensions.Hosting` или
   `Microsoft.Extensions.Hosting + Scrutor`.
+- **Логирование**: Serilog с настройкой из `appsettings.json`. Включается и
+  выключается опцией `--logging`; работает только при включённом DI.
 - **MVVM**: CommunityToolkit.Mvvm или ReactiveUI.
 - **EF Core + SQLite**: `AppDbContext`, инициализация базы и логирование SQL
   через интерцептор. EF Core доступен только при включённом DI.

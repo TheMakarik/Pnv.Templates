@@ -13,6 +13,9 @@
     "Skills": {
       "longName": "skills"
     },
+    "Logging": {
+      "longName": "logging"
+    },
     "EfCore": {
       "longName": "ef"
     },
@@ -30,6 +33,6 @@
   "usageExamples": [
     "--di Hosting --mvvm CommunityToolkit",
     "--di HostingScrutor --mvvm ReactiveUI --ef true --split true",
-    "--di None --tests false --skills false"
+    "--di None --tests false --skills false --logging false"
   ]
 }

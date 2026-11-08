@@ -39,6 +39,7 @@
 | `Mvvm` | `--mvvm` | choice | `CommunityToolkit`, `ReactiveUI` | `CommunityToolkit` |
 | `Tests` | `--tests` | bool | true/false | `true` |
 | `Skills` | `--skills` | bool | true/false | `true` |
+| `Logging` | `--logging` | bool | true/false | `true` |
 | `EfCore` | `--ef` | bool | true/false | `false` |
 | `SplitProjects` | `--split` | bool | true/false | `false` |
 | `AvaloniaVersion` | `--avalonia-version` | choice | см. ниже | `12.1.5` |
@@ -55,10 +56,12 @@
 - `UseScrutor` = `(Di == "HostingScrutor")`
 - `UseCommunityToolkit` = `(Mvvm == "CommunityToolkit")`
 - `UseReactiveUI` = `(Mvvm == "ReactiveUI")`
+- `UseLogging` = `(Logging && Di != "None")`
 - `UseEfCore` = `(EfCore && Di != "None")`
 
-> EF Core требует DI: при `Di=None` инфраструктура EF не создаётся, даже если
-> пользователь поставил галочку. Это поведение нужно описать в README шаблона.
+> EF Core и логирование требуют DI: при `Di=None` инфраструктура EF и Serilog
+> не создаются, даже если пользователь поставил галочки. Это поведение нужно
+> описать в README шаблона.
 
 ## 4. Генерируемая структура
 
@@ -274,10 +277,10 @@ pnv-templates/
 | `ReactiveUI.Avalonia` | `12.0.3` | `UseReactiveUI` |
 | `ReactiveUI.SourceGenerators` | `3.2.0` | `UseReactiveUI` |
 | `Microsoft.Extensions.Hosting` | `10.0.0` | `UseDi` |
-| `Serilog` | `4.3.1` | `UseDi` |
-| `Serilog.Extensions.Logging` | `10.0.0` | `UseDi` |
-| `Serilog.Settings.Configuration` | `10.0.1` | `UseDi` |
-| `Serilog.Sinks.Console` | `6.1.1` | `UseDi` |
+| `Serilog` | `4.3.1` | `UseLogging` |
+| `Serilog.Extensions.Logging` | `10.0.0` | `UseLogging` |
+| `Serilog.Settings.Configuration` | `10.0.1` | `UseLogging` |
+| `Serilog.Sinks.Console` | `6.1.1` | `UseLogging` |
 | `Scrutor` | `7.0.0` | `UseScrutor` |
 | `Microsoft.EntityFrameworkCore.Sqlite` | `10.0.0` | `UseEfCore` |
 | `Microsoft.Extensions.Logging.Abstractions` | `10.0.0` | split + `UseEfCore` (Infrastructure) |
@@ -675,7 +678,7 @@ description: <когда применять, по-русски, 1–2 предл
 - `dependency-injection` — `UseDi && !UseScrutor`
 - `dependency-injection-scrutor` — `UseScrutor`
 - `options` — `UseDi`
-- `logging` — `UseDi`
+- `logging` — `UseLogging`
 - `mvvm-communitytoolkit` — `UseCommunityToolkit`
 - `mvvm-reactiveui` — `UseReactiveUI`
 - `reactiveui-interactions` — `UseReactiveUI`

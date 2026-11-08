@@ -64,13 +64,15 @@ dotnet new pnv-desktop --help
 | `--mvvm` | `CommunityToolkit`, `ReactiveUI` | `CommunityToolkit` |
 | `--tests` | `true` / `false` | `true` |
 | `--skills` | `true` / `false` | `true` |
+| `--logging` | `true` / `false` | `true` |
 | `--ef` | `true` / `false` | `false` |
 | `--split` | `true` / `false` | `false` |
 | `--avalonia-version` | `12.0.4` … `12.1.5` | `12.1.5` |
 | `--no-restore` | `true` / `false` | `false` |
 
-`--ef` работает только при включённом DI. При `--di None` EF Core не
-добавляется, даже если указан `--ef true`.
+`--ef` и `--logging` работают только при включённом DI. При `--di None`
+EF Core и Serilog не добавляются, даже если указаны `--ef true` или
+`--logging true`.
 
 ## Что создаётся
 
@@ -81,6 +83,10 @@ dotnet new pnv-desktop --help
 - `Skills/` — скиллы для OpenCode и ИИ-агентов.
 - `.claude/skills/` — зеркало скиллов для Claude Code.
 - `AGENTS.md`, `CLAUDE.md`, `opencode.json` — при `--skills true`.
+
+При `--logging false` из проекта убираются пакеты Serilog, настройка
+логирования в `Bootstrapper` и секция `Serilog` в `appsettings.json`.
+Остаётся стандартное логирование `Microsoft.Extensions.Hosting`.
 
 Набор скиллов зависит от опций: скиллы по DI, MVVM, EF Core и тестам
 добавляются только вместе с соответствующими технологиями.
@@ -94,6 +100,7 @@ python3 build/verify.py
 Скрипт устанавливает пакет и проверяет:
 
 - все комбинации `Di × Mvvm × SplitProjects` (с EF Core там, где он допустим);
+- включение и выключение логирования;
 - игнорирование `--ef` при `--di None`;
 - сборку на каждой поддерживаемой версии Avalonia;
 - отсутствие шаблонных директив в сгенерированных файлах;

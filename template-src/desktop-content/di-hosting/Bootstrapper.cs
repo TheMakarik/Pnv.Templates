@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 using PnvApp.Options;
 using PnvApp.Services;
 using PnvApp.ViewModels;
+#if (UseLogging)
 using Serilog;
+#endif
 #if (UseEfCore)
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -30,11 +32,13 @@ public sealed class Bootstrapper
 
         builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
+#if (UseLogging)
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Configuration)
             .CreateLogger();
 
         builder.Logging.ClearProviders().AddSerilog(Log.Logger, dispose: true);
+#endif
 
         RegisterOptions(builder);
         RegisterServices(builder.Services);

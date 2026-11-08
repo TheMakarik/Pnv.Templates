@@ -56,7 +56,7 @@ def build(target: Path) -> None:
     print(f"  build ok: {target.name}")
 
 
-def expected_skills(di: str, mvvm: str, tests: bool, use_ef: bool, use_skills: bool) -> set[str]:
+def expected_skills(di: str, mvvm: str, tests: bool, use_ef: bool, use_skills: bool, use_logging: bool) -> set[str]:
     if not use_skills:
         return set()
 
@@ -68,8 +68,10 @@ def expected_skills(di: str, mvvm: str, tests: bool, use_ef: bool, use_skills: b
         "app-settings",
     }
     if di != "None":
-        always |= {"options", "logging"}
+        always |= {"options"}
         always |= {"dependency-injection-scrutor"} if di == "HostingScrutor" else {"dependency-injection"}
+        if use_logging:
+            always |= {"logging"}
     if mvvm == "ReactiveUI":
         always |= {"mvvm-reactiveui", "reactiveui-interactions", "reactiveui-sourcegenerators"}
     else:
@@ -89,6 +91,7 @@ def check_generated(
     mvvm: str,
     tests: bool,
     use_skills: bool = True,
+    use_logging: bool = True,
 ) -> None:
     leftovers = run(
         ["grep", "-rn", "#if", "--include=*.cs", "--include=*.csproj", "--include=*.slnx", "."],
@@ -105,6 +108,16 @@ def check_generated(
     if not expect_ef and list(target.rglob("GreetingRecord.cs")):
         raise SystemExit(f"В {target.name} создана EF-модель без EF")
 
+    if di != "None":
+        project = target / "Source" / target.name / f"{target.name}.csproj"
+        project_text = project.read_text(encoding="utf-8")
+        settings = target / "Source" / target.name / "appsettings.json"
+        settings_text = settings.read_text(encoding="utf-8")
+        if use_logging and ("Serilog.Sinks.Console" not in project_text or '"Serilog"' not in settings_text):
+            raise SystemExit(f"В {target.name} не включено логирование")
+        if not use_logging and ("Serilog" in project_text or '"Serilog"' in settings_text):
+            raise SystemExit(f"В {target.name} логирование осталось при выключенной опции")
+
     skills = target / "Skills"
     mirrored = target / ".claude" / "skills"
     if skills.exists() != mirrored.exists():
@@ -113,7 +126,7 @@ def check_generated(
     mirror = {p.parent.name for p in mirrored.glob("*/SKILL.md")}
     if actual != mirror:
         raise SystemExit(f"В {target.name} скиллы и зеркало расходятся")
-    expected = expected_skills(di, mvvm, tests, expect_ef, use_skills)
+    expected = expected_skills(di, mvvm, tests, expect_ef, use_skills, use_logging)
     if actual != expected:
         missing = expected - actual
         extra = actual - expected
@@ -150,7 +163,7 @@ def main() -> None:
                 ]
                 print(f"== {name} (ef={use_ef}) ==")
                 target = generate(name, options)
-                check_generated(target, use_ef, split, di, mvvm, True)
+                check_generated(target, use_ef, split, di, mvvm, True, use_logging=True)
                 build(target)
 
     print("== EF при Di=None игнорируется ==")
@@ -160,6 +173,26 @@ def main() -> None:
     )
     check_generated(target, expect_ef=False, expect_split=True, di="None", mvvm="CommunityToolkit", tests=True)
     build(target)
+
+    print("== Логирование выключено ==")
+    for name, di, mvvm, ef, split in [
+        ("LoggingOffSingle", "Hosting", "CommunityToolkit", False, False),
+        ("LoggingOffEfSplit", "Hosting", "CommunityToolkit", True, True),
+    ]:
+        target = generate(
+            name,
+            [
+                "--di", di,
+                "--mvvm", mvvm,
+                "--tests", "true",
+                "--skills", "true",
+                "--logging", "false",
+                "--ef", str(ef).lower(),
+                "--split", str(split).lower(),
+            ],
+        )
+        check_generated(target, ef, split, di, mvvm, True, use_logging=False)
+        build(target)
 
     print("== Версии Avalonia ==")
     for version in AVALONIA_VERSIONS:
@@ -176,7 +209,7 @@ def main() -> None:
                 "--avalonia-version", version,
             ],
         )
-        check_generated(target, expect_ef=False, expect_split=False, di="Hosting", mvvm="CommunityToolkit", tests=False, use_skills=False)
+        check_generated(target, expect_ef=False, expect_split=False, di="Hosting", mvvm="CommunityToolkit", tests=False, use_skills=False, use_logging=True)
         build(target)
 
     print("== Тесты: default и split+EF+Scrutor+ReactiveUI ==")

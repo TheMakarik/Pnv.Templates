@@ -69,6 +69,12 @@
       "description": "Добавить библиотеку скиллов для OpenCode и Claude Code.",
       "defaultValue": "true"
     },
+    "Logging": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить логирование Serilog (консоль, настройка из appsettings.json). Работает только при включённом DI.",
+      "defaultValue": "true"
+    },
     "EfCore": {
       "type": "parameter",
       "datatype": "bool",
@@ -148,6 +154,10 @@
     "UseEfCore": {
       "type": "computed",
       "value": "(EfCore && Di != \"None\")"
+    },
+    "UseLogging": {
+      "type": "computed",
+      "value": "(Logging && Di != \"None\")"
     }
   },
   "sources": [
@@ -344,17 +354,17 @@
       ]
     },
     {
-      "source": "../desktop-content/di-hosting/",
+      "source": "../desktop-content/appsettings-basic/",
       "target": "Source/PnvApp/",
-      "condition": "(UseDi)",
+      "condition": "(UseDi && !UseEfCore && !UseLogging)",
       "include": [
-        "Bootstrapper.cs"
+        "appsettings.json"
       ]
     },
     {
-      "source": "../desktop-content/appsettings-basic/",
+      "source": "../desktop-content/appsettings-basic-logging/",
       "target": "Source/PnvApp/",
-      "condition": "(UseDi && !UseEfCore)",
+      "condition": "(UseDi && !UseEfCore && UseLogging)",
       "include": [
         "appsettings.json"
       ]
@@ -362,9 +372,25 @@
     {
       "source": "../desktop-content/appsettings-ef/",
       "target": "Source/PnvApp/",
-      "condition": "(UseEfCore)",
+      "condition": "(UseEfCore && !UseLogging)",
       "include": [
         "appsettings.json"
+      ]
+    },
+    {
+      "source": "../desktop-content/appsettings-ef-logging/",
+      "target": "Source/PnvApp/",
+      "condition": "(UseEfCore && UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../desktop-content/di-hosting/",
+      "target": "Source/PnvApp/",
+      "condition": "(UseDi)",
+      "include": [
+        "Bootstrapper.cs"
       ]
     },
     {
@@ -435,7 +461,7 @@
     {
       "source": "../desktop-content/skills/",
       "target": "Skills/",
-      "condition": "(Skills && (UseDi))",
+      "condition": "(Skills && UseLogging)",
       "include": [
         "logging/**"
       ]
@@ -528,7 +554,7 @@
     {
       "source": "../desktop-content/claude-skills/",
       "target": ".claude/skills/",
-      "condition": "(Skills && (UseDi))",
+      "condition": "(Skills && UseLogging)",
       "include": [
         "logging/**"
       ]

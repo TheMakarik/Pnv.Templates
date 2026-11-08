@@ -5,49 +5,56 @@
     {
       "id": "Di",
       "name": {
-        "text": "Внедрение зависимостей"
+        "text": "Использовать внедрение зависимостей"
       },
       "isVisible": true
     },
     {
       "id": "Mvvm",
       "name": {
-        "text": "MVVM"
+        "text": "MVVM Framework"
       },
       "isVisible": true
     },
     {
       "id": "Tests",
       "name": {
-        "text": "Проект тестов"
+        "text": "Добавить проект тестов"
       },
       "isVisible": true
     },
     {
       "id": "Skills",
       "name": {
-        "text": "Скиллы для ИИ-агентов"
+        "text": "Добавить скиллы для ИИ-агентов"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "Logging",
+      "name": {
+        "text": "Использовать логирование Serilog"
       },
       "isVisible": true
     },
     {
       "id": "EfCore",
       "name": {
-        "text": "EF Core (SQLite)"
+        "text": "Использовать EF Core (SQLite)"
       },
       "isVisible": true
     },
     {
       "id": "SplitProjects",
       "name": {
-        "text": "Разделить на проекты"
+        "text": "Поделить решение на проекты"
       },
       "isVisible": true
     },
     {
       "id": "AvaloniaVersion",
       "name": {
-        "text": "Версия Avalonia"
+        "text": "Версия AvaloniaUI"
       },
       "isVisible": true
     }
