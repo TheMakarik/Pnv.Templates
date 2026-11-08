@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Solution>
+  <Folder Name="/Source/">
+    <Project Path="Source/PnvApp/PnvApp.csproj" />
+<!--#if (SplitProjects) -->
+    <Project Path="Source/PnvApp.Core/PnvApp.Core.csproj" />
+    <Project Path="Source/PnvApp.Modules/PnvApp.Modules.csproj" />
+<!--#endif -->
+<!--#if (UseEfCore && SplitProjects) -->
+    <Project Path="Source/PnvApp.Infrastructure/PnvApp.Infrastructure.csproj" />
+<!--#endif -->
+  </Folder>
+<!--#if (Tests) -->
+  <Folder Name="/Tests/">
+    <Project Path="Tests/PnvApp.Tests/PnvApp.Tests.csproj" />
+  </Folder>
+<!--#endif -->
+</Solution>

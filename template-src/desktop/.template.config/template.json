@@ -1,0 +1,586 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "ПНВ",
+  "classifications": [
+    "Desktop",
+    "Avalonia",
+    "C#"
+  ],
+  "identity": "Pnv.Templates.Desktop",
+  "groupIdentity": "Pnv.Templates",
+  "name": "ПНВ: ДесктопПриложение",
+  "shortName": "pnv-desktop",
+  "description": "Десктопное приложение на AvaloniaUI (.NET 10, C# 14) с выбором DI, MVVM, EF Core (SQLite), тестов, скиллов и структуры решения.",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "PnvApp",
+  "defaultName": "DesktopApplication",
+  "preferNameDirectory": true,
+  "symbols": {
+    "Di": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Способ внедрения зависимостей.",
+      "choices": [
+        {
+          "choice": "None",
+          "description": "Без DI: композиция вручную в App.axaml.cs."
+        },
+        {
+          "choice": "Hosting",
+          "description": "Microsoft.Extensions.Hosting с ручной регистрацией сервисов."
+        },
+        {
+          "choice": "HostingScrutor",
+          "description": "Microsoft.Extensions.Hosting + Scrutor: регистрация сканированием сборок."
+        }
+      ],
+      "defaultValue": "Hosting"
+    },
+    "Mvvm": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Библиотека MVVM.",
+      "choices": [
+        {
+          "choice": "CommunityToolkit",
+          "description": "CommunityToolkit.Mvvm: [ObservableProperty] и [RelayCommand]."
+        },
+        {
+          "choice": "ReactiveUI",
+          "description": "ReactiveUI: [Reactive], [ReactiveCommand] и Interactions."
+        }
+      ],
+      "defaultValue": "CommunityToolkit"
+    },
+    "Tests": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить проект тестов (xUnit, FakeItEasy, FluentAssertions, AutoFixture).",
+      "defaultValue": "true"
+    },
+    "Skills": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить библиотеку скиллов для OpenCode и Claude Code.",
+      "defaultValue": "true"
+    },
+    "EfCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить EF Core и SQLite. Работает только при включённом DI.",
+      "defaultValue": "false"
+    },
+    "SplitProjects": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Разделить решение на проекты UI, Core, Modules и Infrastructure.",
+      "defaultValue": "false"
+    },
+    "AvaloniaVersion": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Версия пакетов AvaloniaUI.",
+      "choices": [
+        {
+          "choice": "12.1.5",
+          "description": "Avalonia 12.1.5"
+        },
+        {
+          "choice": "12.1.4",
+          "description": "Avalonia 12.1.4"
+        },
+        {
+          "choice": "12.1.3",
+          "description": "Avalonia 12.1.3"
+        },
+        {
+          "choice": "12.1.2",
+          "description": "Avalonia 12.1.2"
+        },
+        {
+          "choice": "12.1.1",
+          "description": "Avalonia 12.1.1"
+        },
+        {
+          "choice": "12.1.0",
+          "description": "Avalonia 12.1.0"
+        },
+        {
+          "choice": "12.0.5",
+          "description": "Avalonia 12.0.5"
+        },
+        {
+          "choice": "12.0.4",
+          "description": "Avalonia 12.0.4"
+        }
+      ],
+      "defaultValue": "12.1.5",
+      "replaces": "AvaloniaVersionToken"
+    },
+    "SkipRestore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Не выполнять автоматическое восстановление пакетов после создания проекта.",
+      "defaultValue": "false"
+    },
+    "UseDi": {
+      "type": "computed",
+      "value": "(Di != \"None\")"
+    },
+    "UseScrutor": {
+      "type": "computed",
+      "value": "(Di == \"HostingScrutor\")"
+    },
+    "UseCommunityToolkit": {
+      "type": "computed",
+      "value": "(Mvvm == \"CommunityToolkit\")"
+    },
+    "UseReactiveUI": {
+      "type": "computed",
+      "value": "(Mvvm == \"ReactiveUI\")"
+    },
+    "UseEfCore": {
+      "type": "computed",
+      "value": "(EfCore && Di != \"None\")"
+    }
+  },
+  "sources": [
+    {
+      "source": "../desktop-content/root/",
+      "target": "./",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/app/",
+      "target": "Source/PnvApp/",
+      "include": [
+        "**/*"
+      ],
+      "copyOnly": [
+        "Assets/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/views/",
+      "target": "Source/PnvApp/View/",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/viewmodels-communitytoolkit/",
+      "target": "Source/PnvApp/ViewModels/",
+      "condition": "(UseCommunityToolkit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/viewmodels-reactiveui/",
+      "target": "Source/PnvApp/ViewModels/",
+      "condition": "(UseReactiveUI)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/single-project/",
+      "target": "Source/PnvApp/",
+      "condition": "(!SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/split-ui/",
+      "target": "Source/PnvApp/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/split-core/",
+      "target": "Source/PnvApp.Core/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/split-modules/",
+      "target": "Source/PnvApp.Modules/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/split-infrastructure/",
+      "target": "Source/PnvApp.Infrastructure/",
+      "condition": "(SplitProjects && UseEfCore)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/service-contracts/",
+      "target": "Source/PnvApp/Services/",
+      "condition": "(!SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/service-contracts/",
+      "target": "Source/PnvApp.Core/Services/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/service-implementations/",
+      "target": "Source/PnvApp/Services/",
+      "condition": "(!SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/service-implementations/",
+      "target": "Source/PnvApp.Modules/Services/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/models/",
+      "target": "Source/PnvApp/Models/",
+      "condition": "(!SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/models/",
+      "target": "Source/PnvApp.Core/Models/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/models-ef/",
+      "target": "Source/PnvApp/Models/",
+      "condition": "(UseEfCore && !SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/models-ef/",
+      "target": "Source/PnvApp.Core/Models/",
+      "condition": "(UseEfCore && SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/infrastructure/",
+      "target": "Source/PnvApp/Infrastructure/",
+      "condition": "(UseEfCore && !SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/infrastructure/",
+      "target": "Source/PnvApp.Infrastructure/",
+      "condition": "(UseEfCore && SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/options/",
+      "target": "Source/PnvApp/Options/",
+      "condition": "(UseDi && !SplitProjects)",
+      "include": [
+        "AppOptions.cs"
+      ]
+    },
+    {
+      "source": "../desktop-content/options/",
+      "target": "Source/PnvApp.Core/Options/",
+      "condition": "(UseDi && SplitProjects)",
+      "include": [
+        "AppOptions.cs"
+      ]
+    },
+    {
+      "source": "../desktop-content/options/",
+      "target": "Source/PnvApp/Options/",
+      "condition": "(UseEfCore && !SplitProjects)",
+      "include": [
+        "DatabaseOptions.cs"
+      ]
+    },
+    {
+      "source": "../desktop-content/options/",
+      "target": "Source/PnvApp.Core/Options/",
+      "condition": "(UseEfCore && SplitProjects)",
+      "include": [
+        "DatabaseOptions.cs"
+      ]
+    },
+    {
+      "source": "../desktop-content/di-hosting/",
+      "target": "Source/PnvApp/",
+      "condition": "(UseDi)",
+      "include": [
+        "Bootstrapper.cs"
+      ]
+    },
+    {
+      "source": "../desktop-content/appsettings-basic/",
+      "target": "Source/PnvApp/",
+      "condition": "(UseDi && !UseEfCore)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../desktop-content/appsettings-ef/",
+      "target": "Source/PnvApp/",
+      "condition": "(UseEfCore)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../desktop-content/tests/",
+      "target": "Tests/PnvApp.Tests/",
+      "condition": "(Tests)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/skills-meta/",
+      "target": "./",
+      "condition": "(Skills)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../desktop-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills)",
+      "include": [
+        "architecture/**",
+        "async/**",
+        "avalonia-colors/**",
+        "avalonia-converters/**",
+        "avalonia-theming/**",
+        "clarifying-questions/**",
+        "code-sections/**",
+        "code-style/**",
+        "collections/**",
+        "error-handling/**",
+        "json-sourcegen/**",
+        "models-organization/**",
+        "paths/**",
+        "services-organization/**",
+        "trimming/**",
+        "view-organization/**",
+        "xaml/**",
+        "app-settings/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseDi && !UseScrutor))",
+      "include": [
+        "dependency-injection/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseScrutor))",
+      "include": [
+        "dependency-injection-scrutor/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseDi))",
+      "include": [
+        "options/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseDi))",
+      "include": [
+        "logging/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseCommunityToolkit))",
+      "include": [
+        "mvvm-communitytoolkit/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseReactiveUI))",
+      "include": [
+        "mvvm-reactiveui/**",
+        "reactiveui-interactions/**",
+        "reactiveui-sourcegenerators/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseEfCore))",
+      "include": [
+        "ef-core-sqlite/**",
+        "ef-core-interceptors/**",
+        "infrastructure-organization/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (Tests))",
+      "include": [
+        "testing/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills)",
+      "include": [
+        "architecture/**",
+        "async/**",
+        "avalonia-colors/**",
+        "avalonia-converters/**",
+        "avalonia-theming/**",
+        "clarifying-questions/**",
+        "code-sections/**",
+        "code-style/**",
+        "collections/**",
+        "error-handling/**",
+        "json-sourcegen/**",
+        "models-organization/**",
+        "paths/**",
+        "services-organization/**",
+        "trimming/**",
+        "view-organization/**",
+        "xaml/**",
+        "app-settings/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseDi && !UseScrutor))",
+      "include": [
+        "dependency-injection/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseScrutor))",
+      "include": [
+        "dependency-injection-scrutor/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseDi))",
+      "include": [
+        "options/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseDi))",
+      "include": [
+        "logging/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseCommunityToolkit))",
+      "include": [
+        "mvvm-communitytoolkit/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseReactiveUI))",
+      "include": [
+        "mvvm-reactiveui/**",
+        "reactiveui-interactions/**",
+        "reactiveui-sourcegenerators/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseEfCore))",
+      "include": [
+        "ef-core-sqlite/**",
+        "ef-core-interceptors/**",
+        "infrastructure-organization/**"
+      ]
+    },
+    {
+      "source": "../desktop-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (Tests))",
+      "include": [
+        "testing/**"
+      ]
+    }
+  ],
+  "postActions": [
+    {
+      "condition": "(!SkipRestore)",
+      "description": "Восстановление пакетов NuGet.",
+      "manualInstructions": [
+        {
+          "text": "Выполните 'dotnet restore'."
+        }
+      ],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    }
+  ]
+}

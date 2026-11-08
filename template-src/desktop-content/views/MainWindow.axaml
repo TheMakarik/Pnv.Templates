@@ -1,0 +1,24 @@
+<Window
+    x:Class="PnvApp.View.MainWindow"
+    x:DataType="vm:MainViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:PnvApp.ViewModels"
+    Title="PnvApp"
+    Width="800"
+    Height="450"
+    WindowStartupLocation="CenterScreen">
+    <Grid RowDefinitions="*,Auto" Margin="24">
+        <TextBlock
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="24"
+            Text="{Binding Greeting}" />
+        <Button
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            Command="{Binding SayHelloCommand}"
+            Content="Поздороваться" />
+    </Grid>
+</Window>

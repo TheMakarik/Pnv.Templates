@@ -1,0 +1,17 @@
+## Сборка и артефакты
+build/stage/
+artifacts/
+
+## Python
+__pycache__/
+*.pyc
+
+## IDE
+.idea/
+.vs/
+*.user
+*.suo
+
+## OS
+.DS_Store
+Thumbs.db

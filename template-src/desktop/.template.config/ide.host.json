@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json.schemastore.org/ide.host",
+  "icon": "icon.png",
+  "symbolInfo": [
+    {
+      "id": "Di",
+      "name": {
+        "text": "Внедрение зависимостей"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "Mvvm",
+      "name": {
+        "text": "MVVM"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "Tests",
+      "name": {
+        "text": "Проект тестов"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "Skills",
+      "name": {
+        "text": "Скиллы для ИИ-агентов"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "EfCore",
+      "name": {
+        "text": "EF Core (SQLite)"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "SplitProjects",
+      "name": {
+        "text": "Разделить на проекты"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "AvaloniaVersion",
+      "name": {
+        "text": "Версия Avalonia"
+      },
+      "isVisible": true
+    }
+  ]
+}
