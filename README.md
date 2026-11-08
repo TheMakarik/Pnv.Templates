@@ -18,7 +18,7 @@
 python3 build/pack.py --install
 ```
 
-Скрипт собирает `artifacts/Pnv.Templates.1.0.0.nupkg`, удаляет старую версию
+Скрипт собирает `artifacts/Pnv.Templates.1.0.1.nupkg`, удаляет старую версию
 пакета и устанавливает новую.
 
 Проверка, что шаблон виден:

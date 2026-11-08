@@ -252,10 +252,10 @@ pnv-templates/
    `build/stage/content/desktop-content/skills` и
    `build/stage/content/desktop-content/claude-skills`.
 5. Создаёт `build/stage/Pnv.Templates.nuspec` с `<packageType name="Template" />`.
-6. Пакует zip в `artifacts/Pnv.Templates.1.0.0.nupkg`:
+6. Пакует zip в `artifacts/Pnv.Templates.1.0.1.nupkg`:
    `.nuspec` в корне + `content/**`.
 7. Опционально ставит пакет: `dotnet new uninstall Pnv.Templates`;
-   `dotnet new install artifacts/Pnv.Templates.1.0.0.nupkg`.
+   `dotnet new install artifacts/Pnv.Templates.1.0.1.nupkg`.
 
 Минимальный nupkg без `[Content_Types].xml` уже проверен — `dotnet new install`
 его принимает.
@@ -719,8 +719,8 @@ Claude Code не умеет указывать произвольную папк
 
 ## 8. Definition of Done
 
-- `build/pack.py` собирает `artifacts/Pnv.Templates.1.0.0.nupkg`.
-- `dotnet new install artifacts/Pnv.Templates.1.0.0.nupkg` проходит.
+- `build/pack.py` собирает `artifacts/Pnv.Templates.1.0.1.nupkg`.
+- `dotnet new install artifacts/Pnv.Templates.1.0.1.nupkg` проходит.
 - `dotnet new list` показывает `ПНВ: ДесктопПриложение` / `pnv-desktop`.
 - `dotnet new pnv-desktop --help` показывает все опции с русскими описаниями.
 - Все валидные комбинации опций генерируются без ошибок.

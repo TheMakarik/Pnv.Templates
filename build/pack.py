@@ -17,7 +17,7 @@ SKILLS = TEMPLATE_SRC / "skills"
 ARTIFACTS = ROOT / "artifacts"
 
 PACKAGE_ID = "Pnv.Templates"
-PACKAGE_VERSION = "1.0.0"
+PACKAGE_VERSION = "1.0.1"
 
 NUSPEC = f"""<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">

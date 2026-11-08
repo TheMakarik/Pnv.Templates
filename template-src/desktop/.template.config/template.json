@@ -27,18 +27,22 @@
       "choices": [
         {
           "choice": "None",
-          "description": "Без DI: композиция вручную в App.axaml.cs."
+          "description": "Без DI: композиция вручную в App.axaml.cs.",
+          "displayName": "Без DI"
         },
         {
           "choice": "Hosting",
-          "description": "Microsoft.Extensions.Hosting с ручной регистрацией сервисов."
+          "description": "Microsoft.Extensions.Hosting с ручной регистрацией сервисов.",
+          "displayName": "Hosting (Microsoft.Extensions.Hosting)"
         },
         {
           "choice": "HostingScrutor",
-          "description": "Microsoft.Extensions.Hosting + Scrutor: регистрация сканированием сборок."
+          "description": "Microsoft.Extensions.Hosting + Scrutor: регистрация сканированием сборок.",
+          "displayName": "Hosting + Scrutor"
         }
       ],
-      "defaultValue": "Hosting"
+      "defaultValue": "Hosting",
+      "displayName": "Использовать внедрение зависимостей"
     },
     "Mvvm": {
       "type": "parameter",
@@ -48,44 +52,52 @@
       "choices": [
         {
           "choice": "CommunityToolkit",
-          "description": "CommunityToolkit.Mvvm: [ObservableProperty] и [RelayCommand]."
+          "description": "CommunityToolkit.Mvvm: [ObservableProperty] и [RelayCommand].",
+          "displayName": "CommunityToolkit.Mvvm"
         },
         {
           "choice": "ReactiveUI",
-          "description": "ReactiveUI: [Reactive], [ReactiveCommand] и Interactions."
+          "description": "ReactiveUI: [Reactive], [ReactiveCommand] и Interactions.",
+          "displayName": "ReactiveUI"
         }
       ],
-      "defaultValue": "CommunityToolkit"
+      "defaultValue": "CommunityToolkit",
+      "displayName": "MVVM Framework"
     },
     "Tests": {
       "type": "parameter",
       "datatype": "bool",
       "description": "Добавить проект тестов (xUnit, FakeItEasy, FluentAssertions, AutoFixture).",
-      "defaultValue": "true"
+      "defaultValue": "true",
+      "displayName": "Добавить проект тестов"
     },
     "Skills": {
       "type": "parameter",
       "datatype": "bool",
       "description": "Добавить библиотеку скиллов для OpenCode и Claude Code.",
-      "defaultValue": "true"
+      "defaultValue": "true",
+      "displayName": "Добавить скиллы для ИИ-агентов"
     },
     "Logging": {
       "type": "parameter",
       "datatype": "bool",
       "description": "Добавить логирование Serilog (консоль, настройка из appsettings.json). Работает только при включённом DI.",
-      "defaultValue": "true"
+      "defaultValue": "true",
+      "displayName": "Использовать логирование Serilog"
     },
     "EfCore": {
       "type": "parameter",
       "datatype": "bool",
       "description": "Добавить EF Core и SQLite. Работает только при включённом DI.",
-      "defaultValue": "false"
+      "defaultValue": "false",
+      "displayName": "Использовать EF Core (SQLite)"
     },
     "SplitProjects": {
       "type": "parameter",
       "datatype": "bool",
       "description": "Разделить решение на проекты UI, Core, Modules и Infrastructure.",
-      "defaultValue": "false"
+      "defaultValue": "false",
+      "displayName": "Поделить решение на проекты"
     },
     "AvaloniaVersion": {
       "type": "parameter",
@@ -95,45 +107,55 @@
       "choices": [
         {
           "choice": "12.1.5",
-          "description": "Avalonia 12.1.5"
+          "description": "Avalonia 12.1.5",
+          "displayName": "Avalonia 12.1.5"
         },
         {
           "choice": "12.1.4",
-          "description": "Avalonia 12.1.4"
+          "description": "Avalonia 12.1.4",
+          "displayName": "Avalonia 12.1.4"
         },
         {
           "choice": "12.1.3",
-          "description": "Avalonia 12.1.3"
+          "description": "Avalonia 12.1.3",
+          "displayName": "Avalonia 12.1.3"
         },
         {
           "choice": "12.1.2",
-          "description": "Avalonia 12.1.2"
+          "description": "Avalonia 12.1.2",
+          "displayName": "Avalonia 12.1.2"
         },
         {
           "choice": "12.1.1",
-          "description": "Avalonia 12.1.1"
+          "description": "Avalonia 12.1.1",
+          "displayName": "Avalonia 12.1.1"
         },
         {
           "choice": "12.1.0",
-          "description": "Avalonia 12.1.0"
+          "description": "Avalonia 12.1.0",
+          "displayName": "Avalonia 12.1.0"
         },
         {
           "choice": "12.0.5",
-          "description": "Avalonia 12.0.5"
+          "description": "Avalonia 12.0.5",
+          "displayName": "Avalonia 12.0.5"
         },
         {
           "choice": "12.0.4",
-          "description": "Avalonia 12.0.4"
+          "description": "Avalonia 12.0.4",
+          "displayName": "Avalonia 12.0.4"
         }
       ],
       "defaultValue": "12.1.5",
-      "replaces": "AvaloniaVersionToken"
+      "replaces": "AvaloniaVersionToken",
+      "displayName": "Версия AvaloniaUI"
     },
     "SkipRestore": {
       "type": "parameter",
       "datatype": "bool",
       "description": "Не выполнять автоматическое восстановление пакетов после создания проекта.",
-      "defaultValue": "false"
+      "defaultValue": "false",
+      "displayName": "Не восстанавливать пакеты"
     },
     "UseDi": {
       "type": "computed",
