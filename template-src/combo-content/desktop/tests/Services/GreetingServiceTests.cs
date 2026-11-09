@@ -23,13 +23,10 @@ public sealed class GreetingServiceTests
     [Fact]
     public void GetGreeting_ReturnsGreetingWithName()
     {
-        // Arrange
         var name = _fixture.Create<string>();
 
-        // Act
         var greeting = systemUnderTests.GetGreeting(name);
 
-        // Assert
         greeting.Text.Should().Contain(name);
     }
 
@@ -37,7 +34,6 @@ public sealed class GreetingServiceTests
     [Fact]
     public void Add_UsesGreetingService()
     {
-        // Arrange
         var greetingService = A.Fake<IGreetingService>();
         A.CallTo(() => greetingService.GetGreeting(A<string>._))
             .Returns(new Greeting("тест"));
@@ -46,26 +42,21 @@ public sealed class GreetingServiceTests
             NewGreetingText = "мир",
         };
 
-        // Act
         ((ICommand)viewModel.AddCommand).Execute(null);
 
-        // Assert
         viewModel.Greetings.Should().Contain("тест");
     }
 #else
     [Fact]
     public async Task InitializeAsync_LoadsGreetingsFromApi()
     {
-        // Arrange
         var greetingsApiClient = A.Fake<IGreetingsApiClient>();
         A.CallTo(() => greetingsApiClient.GetGreetingsAsync(A<CancellationToken>._))
             .Returns(new List<GreetingDto> { new("тест") });
         var viewModel = new MainViewModel(greetingsApiClient);
 
-        // Act
         await viewModel.InitializeAsync();
 
-        // Assert
         viewModel.Greetings.Should().ContainSingle().Which.Should().Be("тест");
     }
 #endif

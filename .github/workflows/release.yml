@@ -1,12 +1,4 @@
-# Релиз Pnv.Templates.
-#
-# Версия берётся из version.txt в корне репозитория. Изменение этого файла
-# в main (или ручной запуск Actions → Release) собирает пакет, прогоняет
-# смок-проверку и публикует GitHub Release v<версия> с .nupkg.
-#
-# Безопасность: ни секретов, ни SSH-ключей не требуется — используется только
-# встроенный GITHUB_TOKEN (права ограничены contents: write).
-
+# Релиз Pnv.Templates: версия из version.txt -> пакет -> смок -> GitHub Release v<версия>. Только встроенный GITHUB_TOKEN.
 name: Release
 
 on:

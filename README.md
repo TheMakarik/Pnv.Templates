@@ -17,7 +17,7 @@
 ```bash
 pwsh build/pack.ps1 -Install              # собрать и установить
 # или только установить уже собранный:
-dotnet new install artifacts/Pnv.Templates.2026.0.0.nupkg
+dotnet new install artifacts/Pnv.Templates.2026.0.1.nupkg
 ```
 
 После установки шаблоны видны в `dotnet new list` и в New Solution в IDE.

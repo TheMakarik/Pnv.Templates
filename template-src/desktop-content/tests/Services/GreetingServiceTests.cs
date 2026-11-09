@@ -17,29 +17,23 @@ public sealed class GreetingServiceTests
     [Fact]
     public void GetGreeting_ReturnsGreetingWithName()
     {
-        // Arrange
         var name = _fixture.Create<string>();
 
-        // Act
         var greeting = systemUnderTests.GetGreeting(name);
 
-        // Assert
         greeting.Text.Should().Contain(name);
     }
 
     [Fact]
     public void SayHello_UsesGreetingService()
     {
-        // Arrange
         var greetingService = A.Fake<IGreetingService>();
         A.CallTo(() => greetingService.GetGreeting(A<string>._))
             .Returns(new Greeting("тест"));
         var viewModel = new MainViewModel(greetingService);
 
-        // Act
         ((ICommand)viewModel.SayHelloCommand).Execute(null);
 
-        // Assert
         viewModel.Greeting.Should().Be("тест");
     }
 }

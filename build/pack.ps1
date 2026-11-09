@@ -1,19 +1,7 @@
-#!/usr/bin/env pwsh
-<#
-.SYNOPSIS
-Собирает NuGet-пакет шаблонов Pnv.Templates.
-
-.EXAMPLE
-pwsh build/pack.ps1                 # собрать пакет (версия из version.txt)
-pwsh build/pack.ps1 -Install        # собрать и установить
-pwsh build/pack.ps1 -Version 2026.0.0
-#>
+# Собирает NuGet-пакет шаблонов Pnv.Templates; версия — из version.txt.
 [CmdletBinding()]
 param(
-    # Версия пакета. По умолчанию берётся из version.txt в корне репозитория.
     [string]$Version,
-
-    # Установить пакет после сборки (dotnet new install).
     [switch]$Install
 )
 
@@ -49,7 +37,7 @@ $Nuspec = @"
 "@
 
 function Copy-Tree {
-    # Рекурсивное слияние каталога-источника в цель; -Force захватывает скрытые файлы (.gitignore и т.п.)
+    # -Force обязателен: без него Copy-Item пропускает скрытые файлы (.gitignore и т.п.)
     param([string]$Source, [string]$Target)
     if (-not (Test-Path $Source)) { throw "Нет каталога: $Source" }
     New-Item -ItemType Directory -Force -Path $Target | Out-Null
@@ -81,8 +69,6 @@ function Copy-SkillSet([string]$TargetRoot, [object[]]$Files) {
     }
 }
 
-# --- staging ---
-
 Reset-Dir $Stage
 
 Copy-Tree (Join-Path $TemplateSrc 'desktop')         (Join-Path $Content 'desktop')
@@ -93,12 +79,10 @@ Copy-Tree (Join-Path $TemplateSrc 'web-content')     (Join-Path $Content 'web-co
 $skillFiles    = Get-SkillFiles (Join-Path $TemplateSrc 'skills')
 $webSkillFiles = Get-SkillFiles (Join-Path $TemplateSrc 'web-skills')
 
-# Десктопные скиллы: Skills/ и зеркало .claude/skills/
 foreach ($name in 'skills', 'claude-skills') {
     Copy-SkillSet (Join-Path $Content 'desktop-content' $name) $skillFiles
 }
 
-# Веб-скиллы
 foreach ($name in 'skills', 'claude-skills') {
     Copy-SkillSet (Join-Path $Content 'web-content' $name) $webSkillFiles
 }
@@ -119,12 +103,9 @@ if (Test-Path $comboTemplate) {
     foreach ($name in 'skills', 'claude-skills') {
         Copy-SkillSet (Join-Path $Content 'combo-content' $name) ($skillFiles + $webOnly + $comboOverrides)
     }
-    Write-Host 'Комбо: скиллы собраны (десктоп + веб-специфичные + комбо-переопределения)'
 }
 
 Write-Host "Скиллов: $($skillFiles.Count) + $($webSkillFiles.Count) веб-скиллов"
-
-# --- сборка пакета ---
 
 Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.ZipFile
@@ -149,8 +130,6 @@ finally {
 }
 
 Write-Host "Пакет: $packagePath ($((Get-Item $packagePath).Length) байт)"
-
-# --- установка ---
 
 if ($Install) {
     # Пакет мог быть не установлен — код возврата удаления не важен.

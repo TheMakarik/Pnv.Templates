@@ -36,10 +36,8 @@ public sealed class GreetingTests
     [Fact]
     public async Task CreateGreetingCommand_CreatesGreetingWithText()
     {
-        // Arrange
         var name = _fixture.Create<string>();
 
-        // Act
 #if (UseEfCore)
         var handler = new CreateGreetingCommandHandler(CreateDbContext());
 #else
@@ -47,14 +45,12 @@ public sealed class GreetingTests
 #endif
         var greeting = await handler.Handle(new CreateGreetingCommand(name), CancellationToken.None);
 
-        // Assert
         greeting.Text.Should().Contain(name);
     }
 
     [Fact]
     public async Task GetGreetingsQuery_ReturnsCreatedGreetings()
     {
-        // Arrange
         var name = _fixture.Create<string>();
 
 #if (UseEfCore)
@@ -67,21 +63,17 @@ public sealed class GreetingTests
         var queryHandler = new GetGreetingsQueryHandler(store);
 #endif
 
-        // Act
         await createHandler.Handle(new CreateGreetingCommand(name), CancellationToken.None);
         var greetings = await queryHandler.Handle(new GetGreetingsQuery(), CancellationToken.None);
 
-        // Assert
         greetings.Should().ContainSingle(greeting => greeting.Text.Contains(name));
     }
 #else
     [Fact]
     public async Task CreateGreetingAsync_CreatesGreetingWithText()
     {
-        // Arrange
         var name = _fixture.Create<string>();
 
-        // Act
 #if (UseEfCore)
         IGreetingService service = new GreetingService(CreateDbContext());
 #else
@@ -89,14 +81,12 @@ public sealed class GreetingTests
 #endif
         var greeting = await service.CreateGreetingAsync(name);
 
-        // Assert
         greeting.Text.Should().Contain(name);
     }
 
     [Fact]
     public async Task GetGreetingsAsync_ReturnsCreatedGreetings()
     {
-        // Arrange
         var name = _fixture.Create<string>();
 
 #if (UseEfCore)
@@ -106,10 +96,8 @@ public sealed class GreetingTests
 #endif
         await service.CreateGreetingAsync(name);
 
-        // Act
         var greetings = await service.GetGreetingsAsync();
 
-        // Assert
         greetings.Should().ContainSingle(greeting => greeting.Text.Contains(name));
     }
 #endif

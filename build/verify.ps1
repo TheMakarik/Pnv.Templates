@@ -1,15 +1,6 @@
-#!/usr/bin/env pwsh
-<#
-.SYNOPSIS
-Генерирует матрицу проектов десктопного шаблона и проверяет сборку/тесты.
-
-.EXAMPLE
-pwsh build/pack.ps1
-pwsh build/verify.ps1
-#>
+# Матрица сборок/тестов десктопного шаблона; версия пакета — из version.txt.
 [CmdletBinding()]
 param(
-    # Версия пакета. По умолчанию берётся из version.txt в корне репозитория.
     [string]$Version
 )
 
@@ -152,7 +143,6 @@ function Test-Generated {
     }
 }
 
-# --- матрица ---
 
 if (-not (Test-Path $Package)) { throw "Нет пакета: $Package. Запустите build/pack.ps1" }
 Install-Package
