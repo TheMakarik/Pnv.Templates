@@ -60,8 +60,10 @@ Skills/                    # скиллы для ИИ-агентов
 - Минимальный API — только в папке `Endpoints` (`*Endpoints.cs`), не в
   `Program.cs` и не в других слоях.
 - Фронтенд — всегда TypeScript, никогда JavaScript.
-- Десктоп ходит в API только через `IGreetingsApiClient` из папки `Api/`:
-  никаких `HttpClient`, URL и JSON вручную во View и ViewModel.
+- Десктоп ходит в API только через `IGreetingsApiClient` из папки `Api/`
+  (при включённой связке HttpClient/Refit); при «Нет связки» (`ApiClient=None`)
+  десктоп работает с локальным `IGreetingService` — никаких `HttpClient`,
+  URL и JSON вручную во View и ViewModel.
 - `Domain`/`Models` — без логики; бизнес-операции — в `Application`/`Services`
   (или handler'ах MediatR).
 - UI-типы (`Window`, `Control`, `Application`) не появляются вне десктопного

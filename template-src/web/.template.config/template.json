@@ -179,6 +179,17 @@
     "UseSpa": {
       "type": "computed",
       "value": "(Frontend == \"React\" || Frontend == \"Vue\" || Frontend == \"BlazorWasm\")"
+    },
+    "Scrutor": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Регистрация сервисов через сканирование сборки (Scrutor). При архитектуре CQRS регистрацию выполняет MediatR — галочка ни на что не влияет.",
+      "displayName": "Использовать Scrutor"
+    },
+    "UseScrutor": {
+      "type": "computed",
+      "value": "(Scrutor)"
     }
   },
   "sources": [
@@ -201,7 +212,7 @@
     {
       "source": "../web-content/arch-four-single/",
       "target": "Backend/Pnv.Web/",
-      "condition": "(Architecture == \"FourLayersSingle\")",
+      "condition": "(Architecture == \"LayeredSingle\")",
       "include": [
         "**/*"
       ]

@@ -23,7 +23,15 @@ builder.Services
     .AddOptions<AppOptions>()
     .Bind(builder.Configuration.GetSection(nameof(AppOptions)));
 
+#if (UseBackendScrutor)
+builder.Services.Scan(scan => scan
+    .FromAssemblies(typeof(IGreetingService).Assembly, typeof(GreetingService).Assembly)
+    .AddClasses(classes => classes.AssignableTo<IGreetingService>())
+    .AsImplementedInterfaces()
+    .WithSingletonLifetime());
+#else
 builder.Services.AddSingleton<IGreetingService, GreetingService>();
+#endif
 
 #if (UseWebEfCore)
 builder.Services.AddInfrastructure(builder.Configuration);

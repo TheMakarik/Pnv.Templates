@@ -1,10 +1,16 @@
+#if (ApiClient == "None")
+using System.Windows.Input;
+#endif
 using AutoFixture;
 using FakeItEasy;
 using FluentAssertions;
-using Pnv.Combo.Desktop.Api;
-using Pnv.Combo.Desktop.Models;
 using Pnv.Combo.Desktop.Services;
 using Pnv.Combo.Desktop.ViewModels;
+#if (ApiClient == "None")
+using Pnv.Combo.Desktop.Models;
+#else
+using Pnv.Combo.Desktop.Api;
+#endif
 using Xunit;
 
 namespace Pnv.Combo.Desktop.Tests.Services;
@@ -27,6 +33,26 @@ public sealed class GreetingServiceTests
         greeting.Text.Should().Contain(name);
     }
 
+#if (ApiClient == "None")
+    [Fact]
+    public void Add_UsesGreetingService()
+    {
+        // Arrange
+        var greetingService = A.Fake<IGreetingService>();
+        A.CallTo(() => greetingService.GetGreeting(A<string>._))
+            .Returns(new Greeting("тест"));
+        var viewModel = new MainViewModel(greetingService)
+        {
+            NewGreetingText = "мир",
+        };
+
+        // Act
+        ((ICommand)viewModel.AddCommand).Execute(null);
+
+        // Assert
+        viewModel.Greetings.Should().Contain("тест");
+    }
+#else
     [Fact]
     public async Task InitializeAsync_LoadsGreetingsFromApi()
     {
@@ -40,6 +66,7 @@ public sealed class GreetingServiceTests
         await viewModel.InitializeAsync();
 
         // Assert
-        viewModel.Greetings.Should().ContainSingle().Which.Text.Should().Be("тест");
+        viewModel.Greetings.Should().ContainSingle().Which.Should().Be("тест");
     }
+#endif
 }

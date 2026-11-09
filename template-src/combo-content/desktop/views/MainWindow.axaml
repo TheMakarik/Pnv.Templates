@@ -3,7 +3,6 @@
     x:DataType="vm:MainViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:api="using:Pnv.Combo.Desktop.Api"
     xmlns:vm="using:Pnv.Combo.Desktop.ViewModels"
     Title="Pnv.Combo.Desktop"
     Width="800"
@@ -14,11 +13,11 @@
             Grid.Row="0"
             ItemsSource="{Binding Greetings}">
             <ListBox.ItemTemplate>
-                <DataTemplate x:DataType="api:GreetingDto">
+                <DataTemplate>
                     <TextBlock
                         VerticalAlignment="Center"
                         FontSize="16"
-                        Text="{Binding Text}" />
+                        Text="{Binding}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

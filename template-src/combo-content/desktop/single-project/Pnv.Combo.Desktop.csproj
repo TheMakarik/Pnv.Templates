@@ -36,6 +36,11 @@
 <!--#if (UseDi) -->
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+  </ItemGroup>
+<!--#endif -->
+
+<!--#if (UseDi && ApiClient != "None") -->
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
   </ItemGroup>
 <!--#endif -->

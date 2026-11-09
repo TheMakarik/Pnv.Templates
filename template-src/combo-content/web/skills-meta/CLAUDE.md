@@ -19,17 +19,11 @@
 
 ## Структура
 
-- `Desktop/<Name>` — Avalonia-приложение; при `SplitProjects` — также
-  `Desktop/<Name>.Core`, `Desktop/<Name>.Modules` и (при EF Core)
-  `Desktop/<Name>.Infrastructure`.
-- `Backend/<Name>.Web` — API и бэкенд-слои.
-- `Frontend/` — веб-фронтенд (Blazor / React / Vue), когда выбраны.
-- `Tests/<Name>.Desktop.Tests` и `Tests/<Name>.Web.Tests` — тесты десктопа и API.
-- `Api` (в десктопе) — клиент API: HTTP-запросы только через `IGreetingsApiClient`,
-  не во View и ViewModel.
+- `Backend/<Name>` — API и бэкенд-слои, `Tests/<Name>.Tests` — тесты.
 - `Endpoints` — только минимальный API (MapXxxEndpoints + DTO).
 - `Domain` / `Models` — сущности и модели без логики приложения.
 - `Application` / `Services` — бизнес-операции (или handler'ы MediatR).
 - `Infrastructure` — EF Core, PostgreSQL, внешние интеграции.
+- `Frontend` — фронтенд-проекты (Blazor / React / Vue), когда выбраны.
 
 Перед изменением архитектуры прочитай `Skills/architecture/SKILL.md`.

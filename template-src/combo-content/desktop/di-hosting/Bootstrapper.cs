@@ -2,10 +2,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Pnv.Combo.Desktop.Api;
 using Pnv.Combo.Desktop.Options;
 using Pnv.Combo.Desktop.Services;
 using Pnv.Combo.Desktop.ViewModels;
+#if (ApiClient != "None")
+using Pnv.Combo.Desktop.Api;
+#endif
 #if (UseDesktopLogging)
 using Serilog;
 #endif
@@ -83,8 +85,10 @@ public sealed class Bootstrapper
         services.AddSingleton<IGreetingService, GreetingService>();
         services.AddSingleton<MainViewModel>();
 #endif
+#if (ApiClient != "None")
         services.AddHttpClient<IGreetingsApiClient, GreetingsApiClient>((_, client) =>
             client.BaseAddress = GetApiBaseUrl(builder.Configuration));
+#endif
 #if (UseDesktopEfCore)
         services.AddDbContext<AppDbContext>((provider, options) =>
         {
@@ -100,8 +104,10 @@ public sealed class Bootstrapper
 #endif
     }
 
+#if (ApiClient != "None")
     private static Uri GetApiBaseUrl(IConfiguration configuration)
         => new(configuration["Api:BaseUrl"] ?? "http://localhost:5080/");
+#endif
 
 #if (UseDesktopEfCore)
 

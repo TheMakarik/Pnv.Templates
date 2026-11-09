@@ -5,6 +5,9 @@ using Pnv.Combo.Desktop.View;
 using Pnv.Combo.Desktop.ViewModels;
 #if (UseDi)
 using Microsoft.Extensions.DependencyInjection;
+#endif
+#if (ApiClient == "None")
+using Pnv.Combo.Desktop.Services;
 #else
 using Pnv.Combo.Desktop.Api;
 #endif
@@ -29,11 +32,18 @@ public sealed partial class App : Application
 
             desktop.ShutdownRequested += (_, _) => host.Dispose();
 #else
+#if (ApiClient == "None")
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = new MainViewModel(new GreetingService()),
+            };
+#else
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainViewModel(
                     new GreetingsApiClient(new HttpClient { BaseAddress = new Uri("http://localhost:5080/") })),
             };
+#endif
 #endif
         }
 

@@ -74,8 +74,8 @@
       "type": "parameter",
       "datatype": "choice",
       "allowMultipleValues": false,
-      "description": "Архитектура бэкенда.",
-      "displayName": "Архитектура",
+      "description": "Архитектура бэкенд-API.",
+      "displayName": "Архитектура бэкенда",
       "choices": [
         {
           "choice": "LayeredSingle",
@@ -103,15 +103,15 @@
     "WebEfCore": {
       "type": "parameter",
       "datatype": "bool",
-      "description": "Использовать EF Core с PostgreSQL (добавляет слой Infrastructure).",
-      "displayName": "Использовать EF Core (PostgreSQL)",
+      "description": "Добавить EF Core с PostgreSQL в бэкенд-API.",
+      "displayName": "Использовать EF Core в бэкенде (PostgreSQL)",
       "defaultValue": true
     },
     "WebLogging": {
       "type": "parameter",
       "datatype": "bool",
-      "description": "Добавить логирование Serilog (консоль, настройка из appsettings.json).",
-      "displayName": "Использовать логирование Serilog",
+      "description": "Логирование Serilog в бэкенд-API.",
+      "displayName": "Использовать Serilog в бэкенде",
       "defaultValue": true
     },
     "Secrets": {
@@ -185,9 +185,14 @@
       "type": "parameter",
       "datatype": "choice",
       "allowMultipleValues": false,
-      "description": "Способ обращения десктопа к API.",
-      "displayName": "Клиент API в десктопе",
+      "description": "Как десктоп-приложение обращается к бэкенд-API.",
+      "displayName": "Связка десктопа с API",
       "choices": [
+        {
+          "choice": "None",
+          "description": "Нет связки: десктоп работает с локальным сервисом, не обращаясь к API.",
+          "displayName": "Нет связки"
+        },
         {
           "choice": "HttpClient",
           "description": "HttpClient вручную (IHttpClientFactory при DI).",
@@ -209,7 +214,7 @@
       "type": "parameter",
       "datatype": "choice",
       "allowMultipleValues": false,
-      "description": "Способ внедрения зависимостей.",
+      "description": "Контейнер зависимостей десктоп-приложения.",
       "choices": [
         {
           "choice": "None",
@@ -228,13 +233,13 @@
         }
       ],
       "defaultValue": "Hosting",
-      "displayName": "Использовать внедрение зависимостей"
+      "displayName": "DI в десктопе"
     },
     "Mvvm": {
       "type": "parameter",
       "datatype": "choice",
       "allowMultipleValues": false,
-      "description": "Библиотека MVVM.",
+      "description": "MVVM-фреймворк десктоп-приложения.",
       "choices": [
         {
           "choice": "CommunityToolkit",
@@ -248,14 +253,14 @@
         }
       ],
       "defaultValue": "CommunityToolkit",
-      "displayName": "MVVM Framework"
+      "displayName": "MVVM в десктопе"
     },
     "SplitProjects": {
       "type": "parameter",
       "datatype": "bool",
-      "description": "Разделить решение на проекты UI, Core, Modules и Infrastructure.",
+      "description": "Разделить десктоп-приложение на проекты UI, Core, Modules (и Infrastructure при EF Core).",
       "defaultValue": "false",
-      "displayName": "Поделить решение на проекты"
+      "displayName": "Архитектура десктопа: разделить на проекты"
     },
     "AvaloniaVersion": {
       "type": "parameter",
@@ -335,16 +340,27 @@
     "DesktopEfCore": {
       "type": "parameter",
       "datatype": "bool",
-      "description": "Добавить EF Core и SQLite. Работает только при включённом DI.",
+      "description": "Добавить EF Core с SQLite в десктоп-приложение.",
       "defaultValue": "false",
-      "displayName": "Использовать EF Core (SQLite)"
+      "displayName": "Использовать EF Core в десктопе (SQLite)"
     },
     "DesktopLogging": {
       "type": "parameter",
       "datatype": "bool",
-      "description": "Добавить логирование Serilog (консоль, настройка из appsettings.json). Работает только при включённом DI.",
+      "description": "Логирование Serilog в десктоп-приложении.",
       "defaultValue": "true",
-      "displayName": "Использовать логирование Serilog"
+      "displayName": "Использовать Serilog в десктопе"
+    },
+    "Scrutor": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Регистрация сервисов бэкенда через сканирование сборки (Scrutor). При архитектуре CQRS регистрацию выполняет MediatR — галочка ни на что не влияет.",
+      "displayName": "Использовать Scrutor в бэкенде"
+    },
+    "UseBackendScrutor": {
+      "type": "computed",
+      "value": "(Scrutor)"
     }
   },
   "sources": [
@@ -393,6 +409,38 @@
       "source": "../combo-content/desktop/single-project/",
       "target": "Desktop/Pnv.Combo.Desktop/",
       "condition": "(!SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/api-contract/",
+      "target": "Desktop/Pnv.Combo.Desktop/Api/",
+      "condition": "(ApiClient != \"None\" && !SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/api-contract/",
+      "target": "Desktop/Pnv.Combo.Desktop.Core/Api/",
+      "condition": "(ApiClient != \"None\" && SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/api-impl/",
+      "target": "Desktop/Pnv.Combo.Desktop/Api/",
+      "condition": "(ApiClient != \"None\" && !SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/api-impl/",
+      "target": "Desktop/Pnv.Combo.Desktop.Modules/Api/",
+      "condition": "(ApiClient != \"None\" && SplitProjects)",
       "include": [
         "**/*"
       ]
@@ -600,7 +648,7 @@
     {
       "source": "../combo-content/web/arch-four-single/",
       "target": "Backend/Pnv.Combo.Web/",
-      "condition": "(Architecture == \"FourLayersSingle\")",
+      "condition": "(Architecture == \"LayeredSingle\")",
       "include": [
         "**/*"
       ]

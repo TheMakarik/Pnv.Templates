@@ -26,4 +26,9 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
   </ItemGroup>
 <!--#endif -->
+  <!--#if (UseBackendScrutor) -->
+  <ItemGroup>
+    <PackageReference Include="Scrutor" Version="7.0.0" />
+  </ItemGroup>
+<!--#endif -->
 </Project>
