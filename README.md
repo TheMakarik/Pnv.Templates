@@ -15,9 +15,9 @@
 Публикации на nuget.org нет — пакет ставится из локального файла:
 
 ```bash
-python3 build/pack.py --install          # собрать и установить
+pwsh build/pack.ps1 -Install              # собрать и установить
 # или только установить уже собранный:
-dotnet new install artifacts/Pnv.Templates.1.0.1.nupkg
+dotnet new install artifacts/Pnv.Templates.2026.0.0.nupkg
 ```
 
 После установки шаблоны видны в `dotnet new list` и в New Solution в IDE.
@@ -93,10 +93,22 @@ template-src/            — источники шаблонов
   combo-content/         — контент комбо (копии с переименованием имён/символов)
   combo-skills/          — merged-скиллы комбо
   skills/ web-skills/    — скиллы десктопа и веба
-build/pack.py            — staging + сборка .nupkg (флаг --install ставит пакет)
-build/verify.py          — матрица сборок/тестов десктопного шаблона
+build/pack.ps1           — staging + сборка .nupkg (-Install ставит пакет)
+build/verify.ps1         — матрица сборок/тестов десктопного шаблона
+version.txt              — версия пакета (для сборки и релизов)
 artifacts/               — собранный пакет
 ```
 
 Проверенная матрица: все опции комбо (связка None/HttpClient/Refit, split-десктоп,
 EF Core и Serilog раздельно, Scrutor, фронтенды) — сборка 0 ошибок, тесты зелёные.
+
+## Релизы
+
+Версия пакета живёт в `version.txt` в корне. Изменение этого файла в `main`
+(или ручной запуск **Actions → Release**) запускает сборку: пакет проходит
+смок-проверку трёх шаблонов, затем создаётся GitHub Release `v<версия>` с
+`Pnv.Templates.<версия>.nupkg`.
+
+В workflow не используется ни одного секрета и ключа — только встроенный
+`GITHUB_TOKEN` (права `contents: write`); SSH-ключи остаются на локальной
+машине и в CI не нужны.

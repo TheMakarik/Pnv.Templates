@@ -1,0 +1,71 @@
+# Релиз Pnv.Templates.
+#
+# Версия берётся из version.txt в корне репозитория. Изменение этого файла
+# в main (или ручной запуск Actions → Release) собирает пакет, прогоняет
+# смок-проверку и публикует GitHub Release v<версия> с .nupkg.
+#
+# Безопасность: ни секретов, ни SSH-ключей не требуется — используется только
+# встроенный GITHUB_TOKEN (права ограничены contents: write).
+
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths: ['version.txt']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: true
+
+jobs:
+  release:
+    name: Собрать пакет и опубликовать релиз
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Версия из version.txt
+        id: ver
+        run: echo "version=$(tr -d '[:space:]' < version.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Собрать пакет
+        run: pwsh build/pack.ps1 -Version '${{ steps.ver.outputs.version }}'
+
+      - name: Смок-проверка пакета
+        run: |
+          set -euo pipefail
+          dotnet new install "artifacts/Pnv.Templates.${{ steps.ver.outputs.version }}.nupkg" >/dev/null
+          dir=$(mktemp -d)
+          dotnet new pnv-desktop -n DSmoke -o "$dir/d" --no-restore >/dev/null
+          dotnet new pnv-web     -n WSmoke -o "$dir/w" --SkipRestore >/dev/null
+          dotnet new pnv-combo   -n CSmoke -o "$dir/c" --SkipRestore >/dev/null
+          dotnet build "$dir/d" --nologo -v q
+          dotnet build "$dir/w" --nologo -v q
+          dotnet build "$dir/c" --nologo -v q
+          rm -rf "$dir"
+
+      - name: Создать релиз и приложить пакет
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.ver.outputs.version }}
+          name: Pnv.Templates v${{ steps.ver.outputs.version }}
+          body: |
+            NuGet-пакет шаблонов `Pnv.Templates` версии ${{ steps.ver.outputs.version }}.
+
+            Установка:
+            ```
+            dotnet new install Pnv.Templates.${{ steps.ver.outputs.version }}.nupkg
+            ```
+          files: artifacts/Pnv.Templates.*.nupkg
+          fail_on_unmatched_files: true

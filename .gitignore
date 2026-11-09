@@ -2,10 +2,6 @@
 build/stage/
 artifacts/
 
-## Python
-__pycache__/
-*.pyc
-
 ## IDE
 .idea/
 .vs/
