@@ -25,7 +25,7 @@ NUSPEC = f"""<?xml version="1.0" encoding="utf-8"?>
     <id>{PACKAGE_ID}</id>
     <version>{PACKAGE_VERSION}</version>
     <authors>PNV</authors>
-    <description>Шаблоны .NET для проектов ПНВ: десктопное приложение на AvaloniaUI.</description>
+    <description>Шаблоны .NET для проектов ПНВ: десктопное приложение на AvaloniaUI и веб-приложение на ASP.NET Core Minimal API.</description>
     <packageTypes>
       <packageType name="Template" />
     </packageTypes>
@@ -49,6 +49,12 @@ def copy_tree(source: Path, target: Path) -> None:
 def stage_content() -> None:
     copy_tree(TEMPLATE_SRC / "desktop", CONTENT / "desktop")
     copy_tree(TEMPLATE_SRC / "desktop-content", CONTENT / "desktop-content")
+    copy_tree(TEMPLATE_SRC / "web", CONTENT / "web")
+    copy_tree(TEMPLATE_SRC / "web-content", CONTENT / "web-content")
+
+    skill_files = sorted(SKILLS.glob("*/SKILL.md"))
+    if not skill_files:
+        raise SystemExit(f"Не найдены скиллы в {SKILLS}")
 
     skills_target = CONTENT / "desktop-content" / "skills"
     claude_target = CONTENT / "desktop-content" / "claude-skills"
@@ -58,10 +64,6 @@ def stage_content() -> None:
             shutil.rmtree(target)
         target.mkdir(parents=True)
 
-    skill_files = sorted(SKILLS.glob("*/SKILL.md"))
-    if not skill_files:
-        raise SystemExit(f"Не найдены скиллы в {SKILLS}")
-
     for skill_file in skill_files:
         skill_id = skill_file.parent.name
         for target in (skills_target, claude_target):
@@ -69,7 +71,23 @@ def stage_content() -> None:
             destination.mkdir(parents=True, exist_ok=True)
             shutil.copy2(skill_file, destination / "SKILL.md")
 
-    print(f"Скиллов: {len(skill_files)}")
+    web_skills = TEMPLATE_SRC / "web-skills"
+    web_skill_files = sorted(web_skills.glob("*/SKILL.md"))
+    if not web_skill_files:
+        raise SystemExit(f"Не найдены скиллы в {web_skills}")
+
+    for target_name in ("skills", "claude-skills"):
+        web_target = CONTENT / "web-content" / target_name
+        if web_target.exists():
+            shutil.rmtree(web_target)
+        web_target.mkdir(parents=True)
+
+        for skill_file in web_skill_files:
+            destination = web_target / skill_file.parent.name
+            destination.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(skill_file, destination / "SKILL.md")
+
+    print(f"Скиллов: {len(skill_files)} + {len(web_skill_files)} веб-скиллов")
 
 
 def build_package() -> Path:

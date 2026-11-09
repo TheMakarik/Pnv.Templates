@@ -3,7 +3,7 @@ using Avalonia;
 using ReactiveUI.Avalonia;
 #endif
 
-namespace PnvApp;
+namespace Pnv.Desktop;
 
 internal static class Program
 {

@@ -11,7 +11,7 @@ description: Темы Avalonia: FluentTheme, RequestedThemeVariant, ResourceDict
 
 ```xml
 <Application
-    x:Class="PnvApp.App"
+    x:Class="Pnv.Desktop.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     RequestedThemeVariant="Default">
@@ -43,8 +43,8 @@ View/
 <Application.Resources>
     <ResourceDictionary>
         <ResourceDictionary.MergedDictionaries>
-            <ResourceInclude Source="avares://PnvApp/View/Styles/Colors.axaml" />
-            <ResourceInclude Source="avares://PnvApp/View/Styles/Controls.axaml" />
+            <ResourceInclude Source="avares://Pnv.Desktop/View/Styles/Colors.axaml" />
+            <ResourceInclude Source="avares://Pnv.Desktop/View/Styles/Controls.axaml" />
         </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
 </Application.Resources>

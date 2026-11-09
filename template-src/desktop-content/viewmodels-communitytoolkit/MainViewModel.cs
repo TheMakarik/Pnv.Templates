@@ -1,8 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PnvApp.Services;
+using Pnv.Desktop.Services;
 
-namespace PnvApp.ViewModels;
+namespace Pnv.Desktop.ViewModels;
 
 public sealed partial class MainViewModel(IGreetingService greetingService) : ViewModelBase
 {

@@ -20,7 +20,7 @@ description: Использование ReactiveUI.SourceGenerators: [Reactive] 
 ```csharp
 using ReactiveUI.SourceGenerators;
 
-namespace PnvApp.ViewModels;
+namespace Pnv.Desktop.ViewModels;
 
 public sealed partial class MainViewModel : ViewModelBase
 {

@@ -1,4 +1,4 @@
-namespace PnvApp.Infrastructure;
+namespace Pnv.Desktop.Infrastructure;
 
 public sealed class DatabaseInitializer(AppDbContext dbContext)
 {

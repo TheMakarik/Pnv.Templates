@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using PnvApp.Models;
+using Pnv.Desktop.Models;
 
-namespace PnvApp.Infrastructure;
+namespace Pnv.Desktop.Infrastructure;
 
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

@@ -1,0 +1,46 @@
+@page "/"
+
+@using Pnv.Web.Frontend.Services
+
+@inject GreetingsApiClient GreetingsApi
+
+<h1>Приветствия</h1>
+
+<form @onsubmit="CreateGreetingAsync" @onsubmit:preventDefault>
+    <input type="text" @bind="text" />
+    <button type="submit">Добавить</button>
+</form>
+
+<ul>
+    @foreach (var greeting in greetings)
+    {
+        <li>@greeting.Text</li>
+    }
+</ul>
+
+@code {
+    private string? text;
+    private List<GreetingDto> greetings = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadGreetingsAsync();
+    }
+
+    private async Task LoadGreetingsAsync()
+    {
+        greetings = [.. await GreetingsApi.GetGreetingsAsync()];
+    }
+
+    private async Task CreateGreetingAsync()
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return;
+        }
+
+        await GreetingsApi.CreateGreetingAsync(text);
+        text = null;
+        await LoadGreetingsAsync();
+    }
+}

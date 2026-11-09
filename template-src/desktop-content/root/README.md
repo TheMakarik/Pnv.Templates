@@ -1,11 +1,11 @@
-# PnvApp
+# Pnv.Desktop
 
 Десктопное приложение на AvaloniaUI (.NET 10, C# 14).
 
 ## Запуск
 
 ```bash
-dotnet run --project Source/PnvApp
+dotnet run --project Source/Pnv.Desktop
 ```
 
 ## Тесты
@@ -17,16 +17,16 @@ dotnet test
 ## Структура
 
 ```text
-Source/PnvApp/            # приложение: Program, App, View, ViewModels
-Source/PnvApp.Core/       # модели, контракты сервисов, опции (split-режим)
-Source/PnvApp.Modules/    # реализации сервисов (split-режим)
-Source/PnvApp.Infrastructure/  # EF Core и SQLite (при включённом EF)
-Tests/PnvApp.Tests/       # тесты
+Source/Pnv.Desktop/            # приложение: Program, App, View, ViewModels
+Source/Pnv.Desktop.Core/       # модели, контракты сервисов, опции (split-режим)
+Source/Pnv.Desktop.Modules/    # реализации сервисов (split-режим)
+Source/Pnv.Desktop.Infrastructure/  # EF Core и SQLite (при включённом EF)
+Tests/Pnv.Desktop.Tests/       # тесты
 Skills/                   # скиллы для ИИ-агентов
 ```
 
 Если решение создано в режиме одного проекта, всё лежит в
-`Source/PnvApp`: `View`, `ViewModels`, `Models`, `Services`, `Options`,
+`Source/Pnv.Desktop`: `View`, `ViewModels`, `Models`, `Services`, `Options`,
 `Infrastructure`.
 
 ## Возможности

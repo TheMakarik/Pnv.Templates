@@ -80,9 +80,9 @@ private static void RegisterInfrastructure(IServiceCollection services)
 ```csharp
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PnvApp.Models;
+using Pnv.Desktop.Models;
 
-namespace PnvApp.Infrastructure.Configurations;
+namespace Pnv.Desktop.Infrastructure.Configurations;
 
 public sealed class GreetingRecordConfiguration : IEntityTypeConfiguration<GreetingRecord>
 {

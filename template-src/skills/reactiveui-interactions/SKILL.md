@@ -20,7 +20,7 @@ ViewModel ──Handle(input)──► Interaction ──► handler в View ─
 using System.Reactive;
 using ReactiveUI;
 
-namespace PnvApp.ViewModels;
+namespace Pnv.Desktop.ViewModels;
 
 public abstract class ViewModelBase : ReactiveObject
 {
@@ -55,9 +55,9 @@ private async Task SayHelloAsync()
 ```csharp
 using System.Reactive;
 using Avalonia.Controls;
-using PnvApp.ViewModels;
+using Pnv.Desktop.ViewModels;
 
-namespace PnvApp.View;
+namespace Pnv.Desktop.View;
 
 public sealed partial class MainWindow : Window
 {

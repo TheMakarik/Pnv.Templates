@@ -11,8 +11,8 @@ description: Написание тестов на xUnit с FakeItEasy, FluentAss
 Имя файла — `<ТестируемыйТип>Tests.cs`.
 
 ```text
-Tests/PnvApp.Tests/
-├── PnvApp.Tests.csproj
+Tests/Pnv.Desktop.Tests/
+├── Pnv.Desktop.Tests.csproj
 ├── Services/
 │   └── GreetingServiceTests.cs
 └── ViewModels/
@@ -36,10 +36,10 @@ Tests/PnvApp.Tests/
 ```csharp
 using AutoFixture;
 using FluentAssertions;
-using PnvApp.Services;
+using Pnv.Desktop.Services;
 using Xunit;
 
-namespace PnvApp.Tests.Services;
+namespace Pnv.Desktop.Tests.Services;
 
 public sealed class GreetingServiceTests
 {
@@ -85,12 +85,12 @@ A.CallTo(() => greetingService.GetGreeting(A<string>._))
 ```csharp
 using FakeItEasy;
 using FluentAssertions;
-using PnvApp.Models;
-using PnvApp.Services;
-using PnvApp.ViewModels;
+using Pnv.Desktop.Models;
+using Pnv.Desktop.Services;
+using Pnv.Desktop.ViewModels;
 using Xunit;
 
-namespace PnvApp.Tests.ViewModels;
+namespace Pnv.Desktop.Tests.ViewModels;
 
 public sealed class MainViewModelTests
 {

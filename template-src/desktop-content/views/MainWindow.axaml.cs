@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace PnvApp.View;
+namespace Pnv.Desktop.View;
 
 public sealed partial class MainWindow : Window
 {

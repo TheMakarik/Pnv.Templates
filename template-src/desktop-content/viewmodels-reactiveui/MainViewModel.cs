@@ -1,7 +1,7 @@
-using PnvApp.Services;
+using Pnv.Desktop.Services;
 using ReactiveUI.SourceGenerators;
 
-namespace PnvApp.ViewModels;
+namespace Pnv.Desktop.ViewModels;
 
 public sealed partial class MainViewModel(IGreetingService greetingService) : ViewModelBase
 {

@@ -22,7 +22,7 @@ description: Как проектировать сервисы: контракт,
 - Реализация не наследует другие реализации и не содержит UI-кода.
 
 ```csharp
-namespace PnvApp.Services;
+namespace Pnv.Desktop.Services;
 
 public interface IGreetingService
 {
@@ -31,7 +31,7 @@ public interface IGreetingService
 ```
 
 ```csharp
-namespace PnvApp.Services;
+namespace Pnv.Desktop.Services;
 
 public sealed class GreetingService : IGreetingService
 {

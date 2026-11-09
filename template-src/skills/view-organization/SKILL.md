@@ -30,12 +30,12 @@ View/
 
 ```xml
 <Window
-    x:Class="PnvApp.View.MainWindow"
+    x:Class="Pnv.Desktop.View.MainWindow"
     x:DataType="vm:MainViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:PnvApp.ViewModels"
-    Title="PnvApp"
+    xmlns:vm="using:Pnv.Desktop.ViewModels"
+    Title="Pnv.Desktop"
     Width="800"
     Height="450">
     <TextBlock Text="{Binding Greeting}" />
@@ -54,7 +54,7 @@ View/
 Запрещено: бизнес-логика, запросы к БД, вычисления, создание сервисов.
 
 ```csharp
-namespace PnvApp.View;
+namespace Pnv.Desktop.View;
 
 public sealed partial class MainWindow : Window
 {
@@ -80,7 +80,7 @@ public sealed partial class MainWindow : Window
 
 ```xml
 <!-- Плохо: нет x:DataType, биндинг не проверяется компилятором -->
-<Window x:Class="PnvApp.View.MainWindow">
+<Window x:Class="Pnv.Desktop.View.MainWindow">
     <TextBlock Text="{Binding Greeting}" />
 </Window>
 ```

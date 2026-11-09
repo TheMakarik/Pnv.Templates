@@ -2,12 +2,12 @@ using System.Windows.Input;
 using AutoFixture;
 using FakeItEasy;
 using FluentAssertions;
-using PnvApp.Models;
-using PnvApp.Services;
-using PnvApp.ViewModels;
+using Pnv.Desktop.Models;
+using Pnv.Desktop.Services;
+using Pnv.Desktop.ViewModels;
 using Xunit;
 
-namespace PnvApp.Tests.Services;
+namespace Pnv.Desktop.Tests.Services;
 
 public sealed class GreetingServiceTests
 {

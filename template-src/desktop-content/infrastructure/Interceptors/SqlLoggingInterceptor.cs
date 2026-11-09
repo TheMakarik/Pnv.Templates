@@ -2,7 +2,7 @@ using System.Data.Common;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 
-namespace PnvApp.Infrastructure.Interceptors;
+namespace Pnv.Desktop.Infrastructure.Interceptors;
 
 public sealed class SqlLoggingInterceptor(ILogger<SqlLoggingInterceptor> logger)
     : DbCommandInterceptor

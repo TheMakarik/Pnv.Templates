@@ -21,7 +21,7 @@ using Avalonia;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
 
-namespace PnvApp.View.Converters;
+namespace Pnv.Desktop.View.Converters;
 
 public sealed class BooleanToOpacityConverter : MarkupExtension, IValueConverter
 {
@@ -101,7 +101,7 @@ using System.Globalization;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
 
-namespace PnvApp.View.Converters;
+namespace Pnv.Desktop.View.Converters;
 
 public sealed class AllTrueConverter : MarkupExtension, IMultiValueConverter
 {

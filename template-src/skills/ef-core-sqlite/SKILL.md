@@ -14,7 +14,7 @@ description: Работа с EF Core и SQLite в десктопном прил�
 ## Сущность
 
 ```csharp
-namespace PnvApp.Models;
+namespace Pnv.Desktop.Models;
 
 public sealed class GreetingRecord
 {
@@ -32,9 +32,9 @@ public sealed class GreetingRecord
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
-using PnvApp.Models;
+using Pnv.Desktop.Models;
 
-namespace PnvApp.Infrastructure;
+namespace Pnv.Desktop.Infrastructure;
 
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
@@ -62,7 +62,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
 Опции базы:
 
 ```csharp
-namespace PnvApp.Options;
+namespace Pnv.Desktop.Options;
 
 public sealed class DatabaseOptions
 {
@@ -91,7 +91,7 @@ services.AddDbContext<AppDbContext>((provider, options) =>
 ## Инициализация
 
 ```csharp
-namespace PnvApp.Infrastructure;
+namespace Pnv.Desktop.Infrastructure;
 
 public sealed class DatabaseInitializer(AppDbContext dbContext)
 {
@@ -106,8 +106,8 @@ public sealed class DatabaseInitializer(AppDbContext dbContext)
 
 ```bash
 dotnet ef migrations add InitialCreate \
-    --project Source/PnvApp.Infrastructure \
-    --startup-project Source/PnvApp
+    --project Source/Pnv.Desktop.Infrastructure \
+    --startup-project Source/Pnv.Desktop
 ```
 
 ```csharp

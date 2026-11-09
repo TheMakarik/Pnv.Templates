@@ -7,7 +7,7 @@ description: C#-конвенции проекта: var по умолчанию, 
 
 ## Файлы и пространства имён
 
-- File-scoped namespaces: `namespace PnvApp.Models;`
+- File-scoped namespaces: `namespace Pnv.Desktop.Models;`
 - Порядок: `using` (System сверху), namespace, тип.
 - Один публичный тип на файл; имя файла совпадает с типом.
 

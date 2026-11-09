@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Pnv.Desktop</RootNamespace>
+    <AssemblyName>Pnv.Desktop.Modules</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Pnv.Desktop.Core/Pnv.Desktop.Core.csproj" />
+  </ItemGroup>
+</Project>

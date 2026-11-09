@@ -12,7 +12,7 @@ description: MVVM на CommunityToolkit.Mvvm: ObservableObject, [ObservablePrope
 ```csharp
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace PnvApp.ViewModels;
+namespace Pnv.Desktop.ViewModels;
 
 public abstract class ViewModelBase : ObservableObject;
 ```
@@ -25,7 +25,7 @@ public abstract class ViewModelBase : ObservableObject;
 ```csharp
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace PnvApp.ViewModels;
+namespace Pnv.Desktop.ViewModels;
 
 public sealed partial class MainViewModel : ViewModelBase
 {

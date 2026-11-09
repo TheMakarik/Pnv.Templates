@@ -9,7 +9,7 @@ description: Ручная регистрация в DI без Scrutor (AddSingle
 
 ## Где регистрировать
 
-Все регистрации — в `Bootstrapper` (`Source/PnvApp`):
+Все регистрации — в `Bootstrapper` (`Source/Pnv.Desktop`):
 
 - `RegisterOptions(builder)` — опции через `AddOptions<T>().Bind(...)`.
 - `RegisterServices(services)` — сервисы и ViewModel.

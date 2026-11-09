@@ -1,15 +1,15 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using PnvApp.View;
-using PnvApp.ViewModels;
+using Pnv.Desktop.View;
+using Pnv.Desktop.ViewModels;
 #if (UseDi)
 using Microsoft.Extensions.DependencyInjection;
 #else
-using PnvApp.Services;
+using Pnv.Desktop.Services;
 #endif
 
-namespace PnvApp;
+namespace Pnv.Desktop;
 
 public sealed partial class App : Application
 {

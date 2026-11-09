@@ -31,7 +31,7 @@ description: Правила раскладки типов по секциям Se
 
 ```csharp
 // Хорошо: Models/Greeting.cs
-namespace PnvApp.Models;
+namespace Pnv.Desktop.Models;
 
 public sealed record Greeting(string Text);
 ```
@@ -64,11 +64,11 @@ public sealed class GreetingValidator { }
 Неймспейс повторяет секцию, а не физический проект:
 
 ```csharp
-namespace PnvApp.Models;
-namespace PnvApp.Services;
-namespace PnvApp.Infrastructure;
-namespace PnvApp.ViewModels;
-namespace PnvApp.View;
+namespace Pnv.Desktop.Models;
+namespace Pnv.Desktop.Services;
+namespace Pnv.Desktop.Infrastructure;
+namespace Pnv.Desktop.ViewModels;
+namespace Pnv.Desktop.View;
 ```
 
 В split-режиме проекты `<Name>.Core`, `<Name>.Modules` и

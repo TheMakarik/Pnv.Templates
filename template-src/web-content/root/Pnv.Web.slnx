@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Solution>
+  <Folder Name="/Backend/">
+<!--#if (UseSplit && UseEfCore) -->
+    <Project Path="Backend/Pnv.Web.Api/Pnv.Web.Api.csproj" />
+    <Project Path="Backend/Pnv.Web.Core/Pnv.Web.Core.csproj" />
+    <Project Path="Backend/Pnv.Web.Infrastructure/Pnv.Web.Infrastructure.csproj" />
+<!--#endif -->
+<!--#if (UseSplit && !UseEfCore) -->
+    <Project Path="Backend/Pnv.Web.Api/Pnv.Web.Api.csproj" />
+    <Project Path="Backend/Pnv.Web.Core/Pnv.Web.Core.csproj" />
+<!--#endif -->
+<!--#if (!UseSplit) -->
+    <Project Path="Backend/Pnv.Web/Pnv.Web.csproj" />
+<!--#endif -->
+  </Folder>
+<!--#if (UseBlazor) -->
+  <Folder Name="/Frontend/">
+    <Project Path="Frontend/Pnv.Web.Frontend/Pnv.Web.Frontend.csproj" />
+  </Folder>
+<!--#endif -->
+<!--#if (Tests) -->
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Pnv.Web.Tests/Pnv.Web.Tests.csproj" />
+  </Folder>
+<!--#endif -->
+</Solution>

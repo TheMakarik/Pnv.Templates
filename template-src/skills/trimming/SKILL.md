@@ -15,7 +15,7 @@ description: "Full trimming и AOT-совместимость .NET: PublishTrimm
 
 ## Настройки проектов
 
-`Source/PnvApp` (точка публикации):
+`Source/Pnv.Desktop` (точка публикации):
 
 ```xml
 <PropertyGroup>
@@ -26,7 +26,7 @@ description: "Full trimming и AOT-совместимость .NET: PublishTrimm
 </PropertyGroup>
 ```
 
-`Source/PnvApp.Core` и `Source/PnvApp.Modules` (библиотеки, split-режим):
+`Source/Pnv.Desktop.Core` и `Source/Pnv.Desktop.Modules` (библиотеки, split-режим):
 
 ```xml
 <PropertyGroup>
@@ -37,7 +37,7 @@ description: "Full trimming и AOT-совместимость .NET: PublishTrimm
 ```
 
 - `IsAotCompatible=true` уже включает `IsTrimmable` и оба анализатора — не дублировать их вручную.
-- Тестовый проект (`Tests/PnvApp.Tests`) **не** триммится и не помечается `IsAotCompatible`.
+- Тестовый проект (`Tests/Pnv.Desktop.Tests`) **не** триммится и не помечается `IsAotCompatible`.
 - `Core` не тянет внешних зависимостей — держать его trim-clean проще всего, начинать с него.
 
 ## Что запрещено
@@ -46,7 +46,7 @@ description: "Full trimming и AOT-совместимость .NET: PublishTrimm
 
 ```csharp
 // Плохо — типы по строке, триммер их не видит
-var type = Type.GetType("PnvApp.Services.GreetingService");
+var type = Type.GetType("Pnv.Desktop.Services.GreetingService");
 var instance = Activator.CreateInstance(type)!;
 var method = type.GetMethod("Bar");
 method!.Invoke(instance, null);
@@ -54,7 +54,7 @@ method!.Invoke(instance, null);
 // Плохо — динамическая генерация кода
 dynamic value = GetSomething();
 Expression.Lambda<Func<int>>(body).Compile();
-Assembly.Load("PnvApp.Plugins");
+Assembly.Load("Pnv.Desktop.Plugins");
 typeof(List<>).MakeGenericType(concrete);
 ```
 

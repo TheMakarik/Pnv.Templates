@@ -1,7 +1,7 @@
 using System.Reactive;
 using ReactiveUI;
 
-namespace PnvApp.ViewModels;
+namespace Pnv.Desktop.ViewModels;
 
 public abstract class ViewModelBase : ReactiveObject
 {

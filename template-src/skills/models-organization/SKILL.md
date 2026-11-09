@@ -25,7 +25,7 @@ description: Как проектировать и раскладывать мо�
 Иммутабельный DTO — `record`:
 
 ```csharp
-namespace PnvApp.Models;
+namespace Pnv.Desktop.Models;
 
 public sealed record Greeting(string Text);
 ```
@@ -33,7 +33,7 @@ public sealed record Greeting(string Text);
 Изменяемая EF-сущность — `sealed class` с инициализаторами:
 
 ```csharp
-namespace PnvApp.Models;
+namespace Pnv.Desktop.Models;
 
 public sealed class GreetingRecord
 {

@@ -1,0 +1,19 @@
+@page
+@using MediatR
+@using Pnv.Web.Application.Features.Greetings
+@inject ISender Sender
+
+@{
+    ViewData["Title"] = "Приветствия";
+}
+
+<h1>Приветствия</h1>
+
+<ul>
+    @foreach (var greeting in await Sender.Send(new GetGreetingsQuery()))
+    {
+        <li>@greeting.Text</li>
+    }
+</ul>
+
+<p>REST API: <a href="/api/greetings">/api/greetings</a></p>

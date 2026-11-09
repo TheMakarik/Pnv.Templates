@@ -15,7 +15,7 @@
     "language": "C#",
     "type": "project"
   },
-  "sourceName": "PnvApp",
+  "sourceName": "Pnv.Desktop",
   "defaultName": "DesktopApplication",
   "preferNameDirectory": true,
   "symbols": {
@@ -192,7 +192,7 @@
     },
     {
       "source": "../desktop-content/app/",
-      "target": "Source/PnvApp/",
+      "target": "Source/Pnv.Desktop/",
       "include": [
         "**/*"
       ],
@@ -202,14 +202,14 @@
     },
     {
       "source": "../desktop-content/views/",
-      "target": "Source/PnvApp/View/",
+      "target": "Source/Pnv.Desktop/View/",
       "include": [
         "**/*"
       ]
     },
     {
       "source": "../desktop-content/viewmodels-communitytoolkit/",
-      "target": "Source/PnvApp/ViewModels/",
+      "target": "Source/Pnv.Desktop/ViewModels/",
       "condition": "(UseCommunityToolkit)",
       "include": [
         "**/*"
@@ -217,7 +217,7 @@
     },
     {
       "source": "../desktop-content/viewmodels-reactiveui/",
-      "target": "Source/PnvApp/ViewModels/",
+      "target": "Source/Pnv.Desktop/ViewModels/",
       "condition": "(UseReactiveUI)",
       "include": [
         "**/*"
@@ -225,7 +225,7 @@
     },
     {
       "source": "../desktop-content/single-project/",
-      "target": "Source/PnvApp/",
+      "target": "Source/Pnv.Desktop/",
       "condition": "(!SplitProjects)",
       "include": [
         "**/*"
@@ -233,7 +233,7 @@
     },
     {
       "source": "../desktop-content/split-ui/",
-      "target": "Source/PnvApp/",
+      "target": "Source/Pnv.Desktop/",
       "condition": "(SplitProjects)",
       "include": [
         "**/*"
@@ -241,7 +241,7 @@
     },
     {
       "source": "../desktop-content/split-core/",
-      "target": "Source/PnvApp.Core/",
+      "target": "Source/Pnv.Desktop.Core/",
       "condition": "(SplitProjects)",
       "include": [
         "**/*"
@@ -249,7 +249,7 @@
     },
     {
       "source": "../desktop-content/split-modules/",
-      "target": "Source/PnvApp.Modules/",
+      "target": "Source/Pnv.Desktop.Modules/",
       "condition": "(SplitProjects)",
       "include": [
         "**/*"
@@ -257,7 +257,7 @@
     },
     {
       "source": "../desktop-content/split-infrastructure/",
-      "target": "Source/PnvApp.Infrastructure/",
+      "target": "Source/Pnv.Desktop.Infrastructure/",
       "condition": "(SplitProjects && UseEfCore)",
       "include": [
         "**/*"
@@ -265,7 +265,7 @@
     },
     {
       "source": "../desktop-content/service-contracts/",
-      "target": "Source/PnvApp/Services/",
+      "target": "Source/Pnv.Desktop/Services/",
       "condition": "(!SplitProjects)",
       "include": [
         "**/*"
@@ -273,7 +273,7 @@
     },
     {
       "source": "../desktop-content/service-contracts/",
-      "target": "Source/PnvApp.Core/Services/",
+      "target": "Source/Pnv.Desktop.Core/Services/",
       "condition": "(SplitProjects)",
       "include": [
         "**/*"
@@ -281,7 +281,7 @@
     },
     {
       "source": "../desktop-content/service-implementations/",
-      "target": "Source/PnvApp/Services/",
+      "target": "Source/Pnv.Desktop/Services/",
       "condition": "(!SplitProjects)",
       "include": [
         "**/*"
@@ -289,7 +289,7 @@
     },
     {
       "source": "../desktop-content/service-implementations/",
-      "target": "Source/PnvApp.Modules/Services/",
+      "target": "Source/Pnv.Desktop.Modules/Services/",
       "condition": "(SplitProjects)",
       "include": [
         "**/*"
@@ -297,7 +297,7 @@
     },
     {
       "source": "../desktop-content/models/",
-      "target": "Source/PnvApp/Models/",
+      "target": "Source/Pnv.Desktop/Models/",
       "condition": "(!SplitProjects)",
       "include": [
         "**/*"
@@ -305,7 +305,7 @@
     },
     {
       "source": "../desktop-content/models/",
-      "target": "Source/PnvApp.Core/Models/",
+      "target": "Source/Pnv.Desktop.Core/Models/",
       "condition": "(SplitProjects)",
       "include": [
         "**/*"
@@ -313,7 +313,7 @@
     },
     {
       "source": "../desktop-content/models-ef/",
-      "target": "Source/PnvApp/Models/",
+      "target": "Source/Pnv.Desktop/Models/",
       "condition": "(UseEfCore && !SplitProjects)",
       "include": [
         "**/*"
@@ -321,7 +321,7 @@
     },
     {
       "source": "../desktop-content/models-ef/",
-      "target": "Source/PnvApp.Core/Models/",
+      "target": "Source/Pnv.Desktop.Core/Models/",
       "condition": "(UseEfCore && SplitProjects)",
       "include": [
         "**/*"
@@ -329,7 +329,7 @@
     },
     {
       "source": "../desktop-content/infrastructure/",
-      "target": "Source/PnvApp/Infrastructure/",
+      "target": "Source/Pnv.Desktop/Infrastructure/",
       "condition": "(UseEfCore && !SplitProjects)",
       "include": [
         "**/*"
@@ -337,7 +337,7 @@
     },
     {
       "source": "../desktop-content/infrastructure/",
-      "target": "Source/PnvApp.Infrastructure/",
+      "target": "Source/Pnv.Desktop.Infrastructure/",
       "condition": "(UseEfCore && SplitProjects)",
       "include": [
         "**/*"
@@ -345,7 +345,7 @@
     },
     {
       "source": "../desktop-content/options/",
-      "target": "Source/PnvApp/Options/",
+      "target": "Source/Pnv.Desktop/Options/",
       "condition": "(UseDi && !SplitProjects)",
       "include": [
         "AppOptions.cs"
@@ -353,7 +353,7 @@
     },
     {
       "source": "../desktop-content/options/",
-      "target": "Source/PnvApp.Core/Options/",
+      "target": "Source/Pnv.Desktop.Core/Options/",
       "condition": "(UseDi && SplitProjects)",
       "include": [
         "AppOptions.cs"
@@ -361,7 +361,7 @@
     },
     {
       "source": "../desktop-content/options/",
-      "target": "Source/PnvApp/Options/",
+      "target": "Source/Pnv.Desktop/Options/",
       "condition": "(UseEfCore && !SplitProjects)",
       "include": [
         "DatabaseOptions.cs"
@@ -369,7 +369,7 @@
     },
     {
       "source": "../desktop-content/options/",
-      "target": "Source/PnvApp.Core/Options/",
+      "target": "Source/Pnv.Desktop.Core/Options/",
       "condition": "(UseEfCore && SplitProjects)",
       "include": [
         "DatabaseOptions.cs"
@@ -377,7 +377,7 @@
     },
     {
       "source": "../desktop-content/appsettings-basic/",
-      "target": "Source/PnvApp/",
+      "target": "Source/Pnv.Desktop/",
       "condition": "(UseDi && !UseEfCore && !UseLogging)",
       "include": [
         "appsettings.json"
@@ -385,7 +385,7 @@
     },
     {
       "source": "../desktop-content/appsettings-basic-logging/",
-      "target": "Source/PnvApp/",
+      "target": "Source/Pnv.Desktop/",
       "condition": "(UseDi && !UseEfCore && UseLogging)",
       "include": [
         "appsettings.json"
@@ -393,7 +393,7 @@
     },
     {
       "source": "../desktop-content/appsettings-ef/",
-      "target": "Source/PnvApp/",
+      "target": "Source/Pnv.Desktop/",
       "condition": "(UseEfCore && !UseLogging)",
       "include": [
         "appsettings.json"
@@ -401,7 +401,7 @@
     },
     {
       "source": "../desktop-content/appsettings-ef-logging/",
-      "target": "Source/PnvApp/",
+      "target": "Source/Pnv.Desktop/",
       "condition": "(UseEfCore && UseLogging)",
       "include": [
         "appsettings.json"
@@ -409,7 +409,7 @@
     },
     {
       "source": "../desktop-content/di-hosting/",
-      "target": "Source/PnvApp/",
+      "target": "Source/Pnv.Desktop/",
       "condition": "(UseDi)",
       "include": [
         "Bootstrapper.cs"
@@ -417,7 +417,7 @@
     },
     {
       "source": "../desktop-content/tests/",
-      "target": "Tests/PnvApp.Tests/",
+      "target": "Tests/Pnv.Desktop.Tests/",
       "condition": "(Tests)",
       "include": [
         "**/*"

@@ -1,6 +1,6 @@
-using PnvApp.Models;
+using Pnv.Desktop.Models;
 
-namespace PnvApp.Services;
+namespace Pnv.Desktop.Services;
 
 public interface IGreetingService
 {

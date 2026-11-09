@@ -32,10 +32,10 @@ description: Хранение настроек приложения: appsettings
 ```json
 {
   "AppOptions": {
-    "Title": "PnvApp",
+    "Title": "Pnv.Desktop",
     "Width": 800,
     "Height": 450,
-    "DataDirectory": "%APPDATA%/PnvApp"
+    "DataDirectory": "%APPDATA%/Pnv.Desktop"
   },
   "DatabaseOptions": {
     "ConnectionString": ""
@@ -112,7 +112,7 @@ var databasePath = Path.Combine(AppContext.BaseDirectory, "app.db");
 Если DI выключен, настройки передаются явно:
 
 ```csharp
-var options = new AppOptions { Title = "PnvApp" };
+var options = new AppOptions { Title = "Pnv.Desktop" };
 var viewModel = new MainViewModel(new GreetingService(options));
 ```
 

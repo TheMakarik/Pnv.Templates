@@ -1,4 +1,4 @@
-namespace PnvApp.Options;
+namespace Pnv.Desktop.Options;
 
 public sealed class DatabaseOptions
 {

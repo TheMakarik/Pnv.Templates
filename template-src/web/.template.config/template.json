@@ -1,0 +1,694 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "ПНВ",
+  "classifications": [
+    "Web",
+    "AspNetCore",
+    "C#"
+  ],
+  "description": "Веб-приложение на ASP.NET Core Minimal API (.NET 10, C# 14) с выбором фронтенда, архитектуры, EF Core (PostgreSQL), Serilog, user-секретов, Docker, тестов и скиллов.",
+  "groupIdentity": "Pnv.Templates.Web",
+  "identity": "Pnv.Templates.Web",
+  "name": "ПНВ: ВебПриложение",
+  "shortName": "pnv-web",
+  "sourceName": "Pnv.Web",
+  "defaultName": "PnvWeb",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "symbols": {
+    "Frontend": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Фронтенд веб-приложения.",
+      "displayName": "Фронтенд",
+      "choices": [
+        {
+          "choice": "None",
+          "description": "Без фронтенда: только REST API.",
+          "displayName": "Без фронтенда"
+        },
+        {
+          "choice": "RazorPages",
+          "description": "Razor Pages в том же проекте, без папки Frontend.",
+          "displayName": "Razor Pages"
+        },
+        {
+          "choice": "RazorPagesVue",
+          "description": "Razor Pages + Vue (TypeScript) в том же проекте.",
+          "displayName": "Razor Pages + Vue"
+        },
+        {
+          "choice": "RazorPagesReact",
+          "description": "Razor Pages + React (TypeScript) в том же проекте.",
+          "displayName": "Razor Pages + React"
+        },
+        {
+          "choice": "BlazorWasm",
+          "description": "Blazor WebAssembly в папке Frontend + REST API.",
+          "displayName": "Blazor WebAssembly"
+        },
+        {
+          "choice": "BlazorServer",
+          "description": "Blazor Server в папке Frontend + REST API.",
+          "displayName": "Blazor Server"
+        },
+        {
+          "choice": "React",
+          "description": "React SPA (TypeScript, Vite) в папке Frontend + REST API.",
+          "displayName": "React"
+        },
+        {
+          "choice": "Vue",
+          "description": "Vue SPA (TypeScript, Vite) в папке Frontend + REST API.",
+          "displayName": "Vue"
+        }
+      ],
+      "defaultValue": "RazorPages"
+    },
+    "Architecture": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Архитектура бэкенда.",
+      "displayName": "Архитектура",
+      "choices": [
+        {
+          "choice": "LayeredSingle",
+          "description": "Многослойная архитектура в одном проекте: Domain, Application, Endpoints; Infrastructure добавляется при включённом EF Core.",
+          "displayName": "Многослойная (в одном проекте)"
+        },
+        {
+          "choice": "LayeredSplit",
+          "description": "Многослойная архитектура в разных проектах: Api, Core; Infrastructure добавляется при включённом EF Core.",
+          "displayName": "Многослойная (в разных проектах)"
+        },
+        {
+          "choice": "CleanArchitecture",
+          "description": "Чистая архитектура: зависимости направлены к домену, реализации в Infrastructure.",
+          "displayName": "Чистая архитектура"
+        },
+        {
+          "choice": "CleanArchitectureCqrs",
+          "description": "Чистая архитектура + CQRS: MediatR вместо сервисов, handler'ы без behaviors.",
+          "displayName": "Чистая архитектура + CQRS (MediatR)"
+        }
+      ],
+      "defaultValue": "CleanArchitectureCqrs"
+    },
+    "EfCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Использовать EF Core с PostgreSQL (добавляет слой Infrastructure).",
+      "displayName": "Использовать EF Core (PostgreSQL)",
+      "defaultValue": true
+    },
+    "Logging": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить логирование Serilog (консоль, настройка из appsettings.json).",
+      "displayName": "Использовать логирование Serilog",
+      "defaultValue": true
+    },
+    "Secrets": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Использовать .NET user secrets для локальных секретов (строка подключения к БД и т.п.).",
+      "displayName": "Использовать секреты (.NET user secrets)",
+      "defaultValue": true
+    },
+    "Docker": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить Dockerfile и docker-compose (API + PostgreSQL).",
+      "displayName": "Добавить Docker",
+      "defaultValue": false
+    },
+    "Skills": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить библиотеку скиллов для OpenCode и Claude Code.",
+      "displayName": "Добавить скиллы для ИИ-агентов",
+      "defaultValue": true
+    },
+    "Tests": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить проект тестов (xUnit, FakeItEasy, FluentAssertions, AutoFixture).",
+      "displayName": "Добавить проект тестов",
+      "defaultValue": true
+    },
+    "SkipRestore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Не выполнять автоматическое восстановление пакетов после создания проекта.",
+      "displayName": "Не восстанавливать пакеты",
+      "defaultValue": "false"
+    },
+    "UseEfCore": {
+      "type": "computed",
+      "value": "(EfCore)"
+    },
+    "UseLogging": {
+      "type": "computed",
+      "value": "(Logging)"
+    },
+    "UseSplit": {
+      "type": "computed",
+      "value": "(Architecture == \"LayeredSplit\")"
+    },
+    "UseCqrs": {
+      "type": "computed",
+      "value": "(Architecture == \"CleanArchitectureCqrs\")"
+    },
+    "UseRazorPages": {
+      "type": "computed",
+      "value": "(Frontend == \"RazorPages\" || Frontend == \"RazorPagesVue\" || Frontend == \"RazorPagesReact\")"
+    },
+    "UseClientApp": {
+      "type": "computed",
+      "value": "(Frontend == \"RazorPagesVue\" || Frontend == \"RazorPagesReact\")"
+    },
+    "UseBlazor": {
+      "type": "computed",
+      "value": "(Frontend == \"BlazorWasm\" || Frontend == \"BlazorServer\")"
+    },
+    "UseSpa": {
+      "type": "computed",
+      "value": "(Frontend == \"React\" || Frontend == \"Vue\" || Frontend == \"BlazorWasm\")"
+    }
+  },
+  "sources": [
+    {
+      "source": "../web-content/root/",
+      "target": "./",
+      "include": [
+        "**/*",
+        ".gitignore"
+      ]
+    },
+    {
+      "source": "../web-content/csproj-web/",
+      "target": "Backend/Pnv.Web/",
+      "condition": "(!UseSplit && !UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/arch-four-single/",
+      "target": "Backend/Pnv.Web/",
+      "condition": "(Architecture == \"FourLayersSingle\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/arch-clean/",
+      "target": "Backend/Pnv.Web/",
+      "condition": "(Architecture == \"CleanArchitecture\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/arch-cqrs/",
+      "target": "Backend/Pnv.Web/",
+      "condition": "(UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/models-web/",
+      "target": "Backend/Pnv.Web.Core/Domain/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/models-ef-web/",
+      "target": "Backend/Pnv.Web/Domain/",
+      "condition": "(UseEfCore && !UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/models-ef-web/",
+      "target": "Backend/Pnv.Web.Core/Domain/",
+      "condition": "(UseSplit && UseEfCore)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/options-web/",
+      "target": "Backend/Pnv.Web/Options/",
+      "condition": "(!UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/options-web/",
+      "target": "Backend/Pnv.Web.Api/Options/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/endpoints-services/",
+      "target": "Backend/Pnv.Web.Api/Endpoints/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/endpoints-cqrs/",
+      "target": "Backend/Pnv.Web/Endpoints/",
+      "condition": "(UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/infra-ef/",
+      "target": "Backend/Pnv.Web/Infrastructure/",
+      "condition": "(UseEfCore && !UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/infra-ef/",
+      "target": "Backend/Pnv.Web.Infrastructure/",
+      "condition": "(UseSplit && UseEfCore)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/split-infra/",
+      "target": "Backend/Pnv.Web.Infrastructure/",
+      "condition": "(UseSplit && UseEfCore)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/launch-web/",
+      "target": "Backend/Pnv.Web/Properties/",
+      "condition": "(!UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/launch-web/",
+      "target": "Backend/Pnv.Web.Api/Properties/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/split-api/",
+      "target": "Backend/Pnv.Web.Api/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/split-core/",
+      "target": "Backend/Pnv.Web.Core/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/appsettings-basic/",
+      "target": "Backend/Pnv.Web/",
+      "condition": "(!UseSplit && !UseEfCore && !UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../web-content/appsettings-basic/",
+      "target": "Backend/Pnv.Web.Api/",
+      "condition": "(UseSplit && !UseEfCore && !UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../web-content/appsettings-basic-logging/",
+      "target": "Backend/Pnv.Web/",
+      "condition": "(!UseSplit && !UseEfCore && UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../web-content/appsettings-basic-logging/",
+      "target": "Backend/Pnv.Web.Api/",
+      "condition": "(UseSplit && !UseEfCore && UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../web-content/appsettings-ef/",
+      "target": "Backend/Pnv.Web/",
+      "condition": "(UseEfCore && !UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../web-content/appsettings-ef/",
+      "target": "Backend/Pnv.Web.Api/",
+      "condition": "(UseEfCore && UseSplit && !UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../web-content/appsettings-ef-logging/",
+      "target": "Backend/Pnv.Web/",
+      "condition": "(UseEfCore && UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../web-content/appsettings-ef-logging/",
+      "target": "Backend/Pnv.Web.Api/",
+      "condition": "(UseEfCore && UseSplit && UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-razor/",
+      "target": "Backend/Pnv.Web.Api/Pages/",
+      "condition": "(UseRazorPages && UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-razor-cqrs/",
+      "target": "Backend/Pnv.Web/Pages/",
+      "condition": "(UseRazorPages && UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-razor-spa/",
+      "target": "Backend/Pnv.Web/Pages/",
+      "condition": "(UseClientApp && !UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-razor-spa/",
+      "target": "Backend/Pnv.Web.Api/Pages/",
+      "condition": "(UseClientApp && UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-client-vue/",
+      "target": "Backend/Pnv.Web/ClientApp/",
+      "condition": "(Frontend == \"RazorPagesVue\" && !UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-client-vue/",
+      "target": "Backend/Pnv.Web.Api/ClientApp/",
+      "condition": "(Frontend == \"RazorPagesVue\" && UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-client-react/",
+      "target": "Backend/Pnv.Web/ClientApp/",
+      "condition": "(Frontend == \"RazorPagesReact\" && !UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-client-react/",
+      "target": "Backend/Pnv.Web.Api/ClientApp/",
+      "condition": "(Frontend == \"RazorPagesReact\" && UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-blazor-wasm/",
+      "target": "Frontend/Pnv.Web.Frontend/",
+      "condition": "(Frontend == \"BlazorWasm\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-blazor-server/",
+      "target": "Frontend/Pnv.Web.Frontend/",
+      "condition": "(Frontend == \"BlazorServer\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-react/",
+      "target": "Frontend/",
+      "condition": "(Frontend == \"React\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-vue/",
+      "target": "Frontend/",
+      "condition": "(Frontend == \"Vue\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/tests-backend/",
+      "target": "Tests/Pnv.Web.Tests/",
+      "condition": "(Tests)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/skills-meta/",
+      "target": "./",
+      "condition": "(Skills)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills)",
+      "include": [
+        "architecture/**",
+        "endpoints/**",
+        "options/**"
+      ]
+    },
+    {
+      "source": "../web-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && UseLogging)",
+      "include": [
+        "logging/**"
+      ]
+    },
+    {
+      "source": "../web-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && UseEfCore)",
+      "include": [
+        "ef-core-postgresql/**"
+      ]
+    },
+    {
+      "source": "../web-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && UseCqrs)",
+      "include": [
+        "cqrs/**"
+      ]
+    },
+    {
+      "source": "../web-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && Frontend != \"None\")",
+      "include": [
+        "frontend/**"
+      ]
+    },
+    {
+      "source": "../web-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && Secrets)",
+      "include": [
+        "secrets/**"
+      ]
+    },
+    {
+      "source": "../web-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && Tests)",
+      "include": [
+        "testing/**"
+      ]
+    },
+    {
+      "source": "../web-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills)",
+      "include": [
+        "architecture/**",
+        "endpoints/**",
+        "options/**"
+      ]
+    },
+    {
+      "source": "../web-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && UseLogging)",
+      "include": [
+        "logging/**"
+      ]
+    },
+    {
+      "source": "../web-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && UseEfCore)",
+      "include": [
+        "ef-core-postgresql/**"
+      ]
+    },
+    {
+      "source": "../web-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && UseCqrs)",
+      "include": [
+        "cqrs/**"
+      ]
+    },
+    {
+      "source": "../web-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && Frontend != \"None\")",
+      "include": [
+        "frontend/**"
+      ]
+    },
+    {
+      "source": "../web-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && Secrets)",
+      "include": [
+        "secrets/**"
+      ]
+    },
+    {
+      "source": "../web-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && Tests)",
+      "include": [
+        "testing/**"
+      ]
+    },
+    {
+      "source": "../web-content/docker/",
+      "target": "./",
+      "condition": "(Docker && !UseSplit)",
+      "include": [
+        "Dockerfile",
+        "docker-compose.yml",
+        ".dockerignore"
+      ]
+    },
+    {
+      "source": "../web-content/docker/",
+      "target": "./",
+      "condition": "(Docker && UseSplit)",
+      "include": [
+        "docker-compose.yml",
+        ".dockerignore"
+      ]
+    },
+    {
+      "source": "../web-content/docker-split/",
+      "target": "./",
+      "condition": "(Docker && UseSplit)",
+      "include": [
+        "Dockerfile"
+      ]
+    },
+    {
+      "source": "../web-content/models-web/",
+      "target": "Backend/Pnv.Web/Domain/",
+      "condition": "(!UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/endpoints-services/",
+      "target": "Backend/Pnv.Web/Endpoints/",
+      "condition": "(!UseSplit && !UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../web-content/frontend-razor/",
+      "target": "Backend/Pnv.Web/Pages/",
+      "condition": "(UseRazorPages && !UseSplit && !UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    }
+  ],
+  "postActions": [
+    {
+      "condition": "(!SkipRestore)",
+      "description": "Восстановление пакетов NuGet.",
+      "manualInstructions": [
+        {
+          "text": "Выполните 'dotnet restore'."
+        }
+      ],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    }
+  ]
+}

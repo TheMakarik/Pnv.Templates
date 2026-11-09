@@ -14,11 +14,11 @@ description: Настройка IOptions<T> в C#: биндинг секции a
 Класс опций — `sealed`, с инициализаторами и без логики:
 
 ```csharp
-namespace PnvApp.Options;
+namespace Pnv.Desktop.Options;
 
 public sealed class AppOptions
 {
-    public string Title { get; set; } = "PnvApp";
+    public string Title { get; set; } = "Pnv.Desktop";
     public string DataPath { get; set; } = string.Empty;
 }
 ```
@@ -95,7 +95,7 @@ builder.Services
 
 ```csharp
 // Хорошо
-public string Title { get; set; } = "PnvApp";
+public string Title { get; set; } = "Pnv.Desktop";
 
 // Плохо — null при отсутствии ключа
 public string Title { get; set; } = null!;
@@ -107,7 +107,7 @@ public string Title { get; set; } = null!;
 // Плохо: сервис сам лезет в конфигурацию
 public sealed class GreetingService(IConfiguration configuration)
 {
-    public string GetTitle() => configuration["AppOptions:Title"] ?? "PnvApp";
+    public string GetTitle() => configuration["AppOptions:Title"] ?? "Pnv.Desktop";
 }
 ```
 

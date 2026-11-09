@@ -1,0 +1,29 @@
+## Build results
+bin/
+obj/
+artifacts/
+*.nupkg
+*.snupkg
+
+## Rider / Visual Studio
+.idea/
+.vs/
+*.user
+*.suo
+*.userprefs
+
+## Test results
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+## Frontend
+node_modules/
+wwwroot/dist/
+*.tsbuildinfo
+vite.config.ts.timestamp-*
+
+## OS
+.DS_Store
+Thumbs.db

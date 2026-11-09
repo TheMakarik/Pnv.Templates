@@ -2,23 +2,23 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using PnvApp.Options;
-using PnvApp.Services;
-using PnvApp.ViewModels;
+using Pnv.Desktop.Options;
+using Pnv.Desktop.Services;
+using Pnv.Desktop.ViewModels;
 #if (UseLogging)
 using Serilog;
 #endif
 #if (UseEfCore)
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using PnvApp.Infrastructure;
-using PnvApp.Infrastructure.Interceptors;
+using Pnv.Desktop.Infrastructure;
+using Pnv.Desktop.Infrastructure.Interceptors;
 #endif
 #if (UseScrutor)
 using Scrutor;
 #endif
 
-namespace PnvApp;
+namespace Pnv.Desktop;
 
 public sealed class Bootstrapper
 {
