@@ -87,6 +87,41 @@ def stage_content() -> None:
             destination.mkdir(parents=True, exist_ok=True)
             shutil.copy2(skill_file, destination / "SKILL.md")
 
+    # Комбо: скиллы = десктопные + веб-специфичные (общие id берутся из десктопа) + комбо-переопределения.
+    combo_template = TEMPLATE_SRC / "combo"
+    if combo_template.exists():
+        copy_tree(combo_template, CONTENT / "combo")
+        copy_tree(TEMPLATE_SRC / "combo-content", CONTENT / "combo-content")
+
+        web_shared = {"architecture", "logging", "options", "testing"}
+        combo_skills = TEMPLATE_SRC / "combo-skills"
+
+        for target_name in ("skills", "claude-skills"):
+            combo_target = CONTENT / "combo-content" / target_name
+            if combo_target.exists():
+                shutil.rmtree(combo_target)
+            combo_target.mkdir(parents=True)
+
+            for skill_file in skill_files:
+                destination = combo_target / skill_file.parent.name
+                destination.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(skill_file, destination / "SKILL.md")
+
+            for skill_file in web_skill_files:
+                if skill_file.parent.name in web_shared:
+                    continue
+                destination = combo_target / skill_file.parent.name
+                destination.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(skill_file, destination / "SKILL.md")
+
+            if combo_skills.exists():
+                for skill_file in sorted(combo_skills.glob("*/SKILL.md")):
+                    destination = combo_target / skill_file.parent.name
+                    destination.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(skill_file, destination / "SKILL.md")
+
+        print("Комбо: скиллы собраны (десктоп + веб-специфичные + комбо-переопределения)")
+
     print(f"Скиллов: {len(skill_files)} + {len(web_skill_files)} веб-скиллов")
 
 

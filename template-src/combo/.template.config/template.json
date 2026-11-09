@@ -1,0 +1,1243 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "ПНВ",
+  "classifications": [
+    "Desktop",
+    "Web",
+    "AspNetCore",
+    "C#"
+  ],
+  "description": "Комбо-решение: десктоп на AvaloniaUI (Desktop/) + API на ASP.NET Core Minimal API (Backend/) с веб-фронтендом (.NET 10, C# 14). Архитектура, EF Core и Serilog настраиваются раздельно для десктопа и бэкенда; десктоп связан с API (HttpClient или Refit).",
+  "identity": "Pnv.Templates.Combo",
+  "groupIdentity": "Pnv.Templates.Combo",
+  "name": "ПНВ: Комбо",
+  "shortName": "pnv-combo",
+  "sourceName": "Pnv.Combo",
+  "defaultName": "PnvCombo",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "symbols": {
+    "Frontend": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Фронтенд веб-приложения.",
+      "displayName": "Фронтенд",
+      "choices": [
+        {
+          "choice": "None",
+          "description": "Без фронтенда: только REST API.",
+          "displayName": "Без фронтенда"
+        },
+        {
+          "choice": "RazorPages",
+          "description": "Razor Pages в том же проекте, без папки Frontend.",
+          "displayName": "Razor Pages"
+        },
+        {
+          "choice": "RazorPagesVue",
+          "description": "Razor Pages + Vue (TypeScript) в том же проекте.",
+          "displayName": "Razor Pages + Vue"
+        },
+        {
+          "choice": "RazorPagesReact",
+          "description": "Razor Pages + React (TypeScript) в том же проекте.",
+          "displayName": "Razor Pages + React"
+        },
+        {
+          "choice": "BlazorWasm",
+          "description": "Blazor WebAssembly в папке Frontend + REST API.",
+          "displayName": "Blazor WebAssembly"
+        },
+        {
+          "choice": "BlazorServer",
+          "description": "Blazor Server в папке Frontend + REST API.",
+          "displayName": "Blazor Server"
+        },
+        {
+          "choice": "React",
+          "description": "React SPA (TypeScript, Vite) в папке Frontend + REST API.",
+          "displayName": "React"
+        },
+        {
+          "choice": "Vue",
+          "description": "Vue SPA (TypeScript, Vite) в папке Frontend + REST API.",
+          "displayName": "Vue"
+        }
+      ],
+      "defaultValue": "RazorPages"
+    },
+    "Architecture": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Архитектура бэкенда.",
+      "displayName": "Архитектура",
+      "choices": [
+        {
+          "choice": "LayeredSingle",
+          "description": "Многослойная архитектура в одном проекте: Domain, Application, Endpoints; Infrastructure добавляется при включённом EF Core.",
+          "displayName": "Многослойная (в одном проекте)"
+        },
+        {
+          "choice": "LayeredSplit",
+          "description": "Многослойная архитектура в разных проектах: Api, Core; Infrastructure добавляется при включённом EF Core.",
+          "displayName": "Многослойная (в разных проектах)"
+        },
+        {
+          "choice": "CleanArchitecture",
+          "description": "Чистая архитектура: зависимости направлены к домену, реализации в Infrastructure.",
+          "displayName": "Чистая архитектура"
+        },
+        {
+          "choice": "CleanArchitectureCqrs",
+          "description": "Чистая архитектура + CQRS: MediatR вместо сервисов, handler'ы без behaviors.",
+          "displayName": "Чистая архитектура + CQRS (MediatR)"
+        }
+      ],
+      "defaultValue": "CleanArchitectureCqrs"
+    },
+    "WebEfCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Использовать EF Core с PostgreSQL (добавляет слой Infrastructure).",
+      "displayName": "Использовать EF Core (PostgreSQL)",
+      "defaultValue": true
+    },
+    "WebLogging": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить логирование Serilog (консоль, настройка из appsettings.json).",
+      "displayName": "Использовать логирование Serilog",
+      "defaultValue": true
+    },
+    "Secrets": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Использовать .NET user secrets для локальных секретов (строка подключения к БД и т.п.).",
+      "displayName": "Использовать секреты (.NET user secrets)",
+      "defaultValue": true
+    },
+    "Docker": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить Dockerfile и docker-compose (API + PostgreSQL).",
+      "displayName": "Добавить Docker",
+      "defaultValue": false
+    },
+    "Skills": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить библиотеку скиллов для OpenCode и Claude Code.",
+      "defaultValue": "true",
+      "displayName": "Добавить скиллы для ИИ-агентов"
+    },
+    "Tests": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить проект тестов (xUnit, FakeItEasy, FluentAssertions, AutoFixture).",
+      "defaultValue": "true",
+      "displayName": "Добавить проект тестов"
+    },
+    "SkipRestore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Не выполнять автоматическое восстановление пакетов после создания проекта.",
+      "defaultValue": "false",
+      "displayName": "Не восстанавливать пакеты"
+    },
+    "UseWebEfCore": {
+      "type": "computed",
+      "value": "(WebEfCore)"
+    },
+    "UseWebLogging": {
+      "type": "computed",
+      "value": "(WebLogging)"
+    },
+    "UseSplit": {
+      "type": "computed",
+      "value": "(Architecture == \"LayeredSplit\")"
+    },
+    "UseCqrs": {
+      "type": "computed",
+      "value": "(Architecture == \"CleanArchitectureCqrs\")"
+    },
+    "UseRazorPages": {
+      "type": "computed",
+      "value": "(Frontend == \"RazorPages\" || Frontend == \"RazorPagesVue\" || Frontend == \"RazorPagesReact\")"
+    },
+    "UseClientApp": {
+      "type": "computed",
+      "value": "(Frontend == \"RazorPagesVue\" || Frontend == \"RazorPagesReact\")"
+    },
+    "UseBlazor": {
+      "type": "computed",
+      "value": "(Frontend == \"BlazorWasm\" || Frontend == \"BlazorServer\")"
+    },
+    "UseSpa": {
+      "type": "computed",
+      "value": "(Frontend == \"React\" || Frontend == \"Vue\" || Frontend == \"BlazorWasm\")"
+    },
+    "ApiClient": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Способ обращения десктопа к API.",
+      "displayName": "Клиент API в десктопе",
+      "choices": [
+        {
+          "choice": "HttpClient",
+          "description": "HttpClient вручную (IHttpClientFactory при DI).",
+          "displayName": "HttpClient"
+        },
+        {
+          "choice": "Refit",
+          "description": "Типизированный клиент через Refit.",
+          "displayName": "Refit"
+        }
+      ],
+      "defaultValue": "HttpClient"
+    },
+    "UseRefit": {
+      "type": "computed",
+      "value": "(ApiClient == \"Refit\")"
+    },
+    "Di": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Способ внедрения зависимостей.",
+      "choices": [
+        {
+          "choice": "None",
+          "description": "Без DI: композиция вручную в App.axaml.cs.",
+          "displayName": "Без DI"
+        },
+        {
+          "choice": "Hosting",
+          "description": "Microsoft.Extensions.Hosting с ручной регистрацией сервисов.",
+          "displayName": "Hosting (Microsoft.Extensions.Hosting)"
+        },
+        {
+          "choice": "HostingScrutor",
+          "description": "Microsoft.Extensions.Hosting + Scrutor: регистрация сканированием сборок.",
+          "displayName": "Hosting + Scrutor"
+        }
+      ],
+      "defaultValue": "Hosting",
+      "displayName": "Использовать внедрение зависимостей"
+    },
+    "Mvvm": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Библиотека MVVM.",
+      "choices": [
+        {
+          "choice": "CommunityToolkit",
+          "description": "CommunityToolkit.Mvvm: [ObservableProperty] и [RelayCommand].",
+          "displayName": "CommunityToolkit.Mvvm"
+        },
+        {
+          "choice": "ReactiveUI",
+          "description": "ReactiveUI: [Reactive], [ReactiveCommand] и Interactions.",
+          "displayName": "ReactiveUI"
+        }
+      ],
+      "defaultValue": "CommunityToolkit",
+      "displayName": "MVVM Framework"
+    },
+    "SplitProjects": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Разделить решение на проекты UI, Core, Modules и Infrastructure.",
+      "defaultValue": "false",
+      "displayName": "Поделить решение на проекты"
+    },
+    "AvaloniaVersion": {
+      "type": "parameter",
+      "datatype": "choice",
+      "allowMultipleValues": false,
+      "description": "Версия пакетов AvaloniaUI.",
+      "choices": [
+        {
+          "choice": "12.1.5",
+          "description": "Avalonia 12.1.5",
+          "displayName": "Avalonia 12.1.5"
+        },
+        {
+          "choice": "12.1.4",
+          "description": "Avalonia 12.1.4",
+          "displayName": "Avalonia 12.1.4"
+        },
+        {
+          "choice": "12.1.3",
+          "description": "Avalonia 12.1.3",
+          "displayName": "Avalonia 12.1.3"
+        },
+        {
+          "choice": "12.1.2",
+          "description": "Avalonia 12.1.2",
+          "displayName": "Avalonia 12.1.2"
+        },
+        {
+          "choice": "12.1.1",
+          "description": "Avalonia 12.1.1",
+          "displayName": "Avalonia 12.1.1"
+        },
+        {
+          "choice": "12.1.0",
+          "description": "Avalonia 12.1.0",
+          "displayName": "Avalonia 12.1.0"
+        },
+        {
+          "choice": "12.0.5",
+          "description": "Avalonia 12.0.5",
+          "displayName": "Avalonia 12.0.5"
+        },
+        {
+          "choice": "12.0.4",
+          "description": "Avalonia 12.0.4",
+          "displayName": "Avalonia 12.0.4"
+        }
+      ],
+      "defaultValue": "12.1.5",
+      "replaces": "AvaloniaVersionToken",
+      "displayName": "Версия AvaloniaUI"
+    },
+    "UseDi": {
+      "type": "computed",
+      "value": "(Di != \"None\")"
+    },
+    "UseScrutor": {
+      "type": "computed",
+      "value": "(Di == \"HostingScrutor\")"
+    },
+    "UseCommunityToolkit": {
+      "type": "computed",
+      "value": "(Mvvm == \"CommunityToolkit\")"
+    },
+    "UseReactiveUI": {
+      "type": "computed",
+      "value": "(Mvvm == \"ReactiveUI\")"
+    },
+    "UseDesktopEfCore": {
+      "type": "computed",
+      "value": "(EfCore && Di != \"None\")"
+    },
+    "UseDesktopLogging": {
+      "type": "computed",
+      "value": "(Logging && Di != \"None\")"
+    },
+    "DesktopEfCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить EF Core и SQLite. Работает только при включённом DI.",
+      "defaultValue": "false",
+      "displayName": "Использовать EF Core (SQLite)"
+    },
+    "DesktopLogging": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Добавить логирование Serilog (консоль, настройка из appsettings.json). Работает только при включённом DI.",
+      "defaultValue": "true",
+      "displayName": "Использовать логирование Serilog"
+    }
+  },
+  "sources": [
+    {
+      "source": "../combo-content/root/",
+      "target": "./",
+      "include": [
+        "**/*",
+        ".gitignore"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/app/",
+      "target": "Desktop/Pnv.Combo.Desktop/",
+      "include": [
+        "**/*"
+      ],
+      "copyOnly": [
+        "Assets/**"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/views/",
+      "target": "Desktop/Pnv.Combo.Desktop/View/",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/viewmodels-communitytoolkit/",
+      "target": "Desktop/Pnv.Combo.Desktop/ViewModels/",
+      "condition": "(UseCommunityToolkit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/viewmodels-reactiveui/",
+      "target": "Desktop/Pnv.Combo.Desktop/ViewModels/",
+      "condition": "(UseReactiveUI)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/single-project/",
+      "target": "Desktop/Pnv.Combo.Desktop/",
+      "condition": "(!SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/split-ui/",
+      "target": "Desktop/Pnv.Combo.Desktop/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/split-core/",
+      "target": "Desktop/Pnv.Combo.Desktop.Core/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/split-modules/",
+      "target": "Desktop/Pnv.Combo.Desktop.Modules/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/split-infrastructure/",
+      "target": "Desktop/Pnv.Combo.Desktop.Infrastructure/",
+      "condition": "(SplitProjects && UseEfCore)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/service-contracts/",
+      "target": "Desktop/Pnv.Combo.Desktop/Services/",
+      "condition": "(!SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/service-contracts/",
+      "target": "Desktop/Pnv.Combo.Desktop.Core/Services/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/service-implementations/",
+      "target": "Desktop/Pnv.Combo.Desktop/Services/",
+      "condition": "(!SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/service-implementations/",
+      "target": "Desktop/Pnv.Combo.Desktop.Modules/Services/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/models/",
+      "target": "Desktop/Pnv.Combo.Desktop/Models/",
+      "condition": "(!SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/models/",
+      "target": "Desktop/Pnv.Combo.Desktop.Core/Models/",
+      "condition": "(SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/models-ef/",
+      "target": "Desktop/Pnv.Combo.Desktop/Models/",
+      "condition": "(UseEfCore && !SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/models-ef/",
+      "target": "Desktop/Pnv.Combo.Desktop.Core/Models/",
+      "condition": "(UseEfCore && SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/infrastructure/",
+      "target": "Desktop/Pnv.Combo.Desktop/Infrastructure/",
+      "condition": "(UseEfCore && !SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/infrastructure/",
+      "target": "Desktop/Pnv.Combo.Desktop.Infrastructure/",
+      "condition": "(UseEfCore && SplitProjects)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/options/",
+      "target": "Desktop/Pnv.Combo.Desktop/Options/",
+      "condition": "(UseDi && !SplitProjects)",
+      "include": [
+        "AppOptions.cs"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/options/",
+      "target": "Desktop/Pnv.Combo.Desktop.Core/Options/",
+      "condition": "(UseDi && SplitProjects)",
+      "include": [
+        "AppOptions.cs"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/options/",
+      "target": "Desktop/Pnv.Combo.Desktop/Options/",
+      "condition": "(UseEfCore && !SplitProjects)",
+      "include": [
+        "DatabaseOptions.cs"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/options/",
+      "target": "Desktop/Pnv.Combo.Desktop.Core/Options/",
+      "condition": "(UseEfCore && SplitProjects)",
+      "include": [
+        "DatabaseOptions.cs"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/appsettings-basic/",
+      "target": "Desktop/Pnv.Combo.Desktop/",
+      "condition": "(UseDi && !UseEfCore && !UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/appsettings-basic-logging/",
+      "target": "Desktop/Pnv.Combo.Desktop/",
+      "condition": "(UseDi && !UseEfCore && UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/appsettings-ef/",
+      "target": "Desktop/Pnv.Combo.Desktop/",
+      "condition": "(UseEfCore && !UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/appsettings-ef-logging/",
+      "target": "Desktop/Pnv.Combo.Desktop/",
+      "condition": "(UseEfCore && UseLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/di-hosting/",
+      "target": "Desktop/Pnv.Combo.Desktop/",
+      "condition": "(UseDi)",
+      "include": [
+        "Bootstrapper.cs"
+      ]
+    },
+    {
+      "source": "../combo-content/desktop/tests/",
+      "target": "Tests/Pnv.Combo.Desktop.Tests/",
+      "condition": "(Tests)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/csproj-web/",
+      "target": "Backend/Pnv.Combo.Web/",
+      "condition": "(!UseSplit && !UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/arch-four-single/",
+      "target": "Backend/Pnv.Combo.Web/",
+      "condition": "(Architecture == \"FourLayersSingle\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/arch-clean/",
+      "target": "Backend/Pnv.Combo.Web/",
+      "condition": "(Architecture == \"CleanArchitecture\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/arch-cqrs/",
+      "target": "Backend/Pnv.Combo.Web/",
+      "condition": "(UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/models-web/",
+      "target": "Backend/Pnv.Combo.Web.Core/Domain/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/models-ef-web/",
+      "target": "Backend/Pnv.Combo.Web/Domain/",
+      "condition": "(UseWebEfCore && !UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/models-ef-web/",
+      "target": "Backend/Pnv.Combo.Web.Core/Domain/",
+      "condition": "(UseSplit && UseWebEfCore)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/options-web/",
+      "target": "Backend/Pnv.Combo.Web/Options/",
+      "condition": "(!UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/options-web/",
+      "target": "Backend/Pnv.Combo.Web.Api/Options/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/endpoints-services/",
+      "target": "Backend/Pnv.Combo.Web.Api/Endpoints/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/endpoints-cqrs/",
+      "target": "Backend/Pnv.Combo.Web/Endpoints/",
+      "condition": "(UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/infra-ef/",
+      "target": "Backend/Pnv.Combo.Web/Infrastructure/",
+      "condition": "(UseWebEfCore && !UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/infra-ef/",
+      "target": "Backend/Pnv.Combo.Web.Infrastructure/",
+      "condition": "(UseSplit && UseWebEfCore)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/split-infra/",
+      "target": "Backend/Pnv.Combo.Web.Infrastructure/",
+      "condition": "(UseSplit && UseWebEfCore)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/launch-web/",
+      "target": "Backend/Pnv.Combo.Web/Properties/",
+      "condition": "(!UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/launch-web/",
+      "target": "Backend/Pnv.Combo.Web.Api/Properties/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/split-api/",
+      "target": "Backend/Pnv.Combo.Web.Api/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/split-core/",
+      "target": "Backend/Pnv.Combo.Web.Core/",
+      "condition": "(UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/appsettings-basic/",
+      "target": "Backend/Pnv.Combo.Web/",
+      "condition": "(!UseSplit && !UseWebEfCore && !UseWebLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/web/appsettings-basic/",
+      "target": "Backend/Pnv.Combo.Web.Api/",
+      "condition": "(UseSplit && !UseWebEfCore && !UseWebLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/web/appsettings-basic-logging/",
+      "target": "Backend/Pnv.Combo.Web/",
+      "condition": "(!UseSplit && !UseWebEfCore && UseWebLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/web/appsettings-basic-logging/",
+      "target": "Backend/Pnv.Combo.Web.Api/",
+      "condition": "(UseSplit && !UseWebEfCore && UseWebLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/web/appsettings-ef/",
+      "target": "Backend/Pnv.Combo.Web/",
+      "condition": "(UseWebEfCore && !UseWebLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/web/appsettings-ef/",
+      "target": "Backend/Pnv.Combo.Web.Api/",
+      "condition": "(UseWebEfCore && UseSplit && !UseWebLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/web/appsettings-ef-logging/",
+      "target": "Backend/Pnv.Combo.Web/",
+      "condition": "(UseWebEfCore && UseWebLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/web/appsettings-ef-logging/",
+      "target": "Backend/Pnv.Combo.Web.Api/",
+      "condition": "(UseWebEfCore && UseSplit && UseWebLogging)",
+      "include": [
+        "appsettings.json"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-razor/",
+      "target": "Backend/Pnv.Combo.Web.Api/Pages/",
+      "condition": "(UseRazorPages && UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-razor-cqrs/",
+      "target": "Backend/Pnv.Combo.Web/Pages/",
+      "condition": "(UseRazorPages && UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-razor-spa/",
+      "target": "Backend/Pnv.Combo.Web/Pages/",
+      "condition": "(UseClientApp && !UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-razor-spa/",
+      "target": "Backend/Pnv.Combo.Web.Api/Pages/",
+      "condition": "(UseClientApp && UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-client-vue/",
+      "target": "Backend/Pnv.Combo.Web/ClientApp/",
+      "condition": "(Frontend == \"RazorPagesVue\" && !UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-client-vue/",
+      "target": "Backend/Pnv.Combo.Web.Api/ClientApp/",
+      "condition": "(Frontend == \"RazorPagesVue\" && UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-client-react/",
+      "target": "Backend/Pnv.Combo.Web/ClientApp/",
+      "condition": "(Frontend == \"RazorPagesReact\" && !UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-client-react/",
+      "target": "Backend/Pnv.Combo.Web.Api/ClientApp/",
+      "condition": "(Frontend == \"RazorPagesReact\" && UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-blazor-wasm/",
+      "target": "Frontend/Pnv.Combo.Web.Frontend/",
+      "condition": "(Frontend == \"BlazorWasm\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-blazor-server/",
+      "target": "Frontend/Pnv.Combo.Web.Frontend/",
+      "condition": "(Frontend == \"BlazorServer\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-react/",
+      "target": "Frontend/",
+      "condition": "(Frontend == \"React\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-vue/",
+      "target": "Frontend/",
+      "condition": "(Frontend == \"Vue\")",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/tests-backend/",
+      "target": "Tests/Pnv.Combo.Web.Tests/",
+      "condition": "(Tests)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/skills-meta/",
+      "target": "./",
+      "condition": "(Skills)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/docker/",
+      "target": "./",
+      "condition": "(Docker && !UseSplit)",
+      "include": [
+        "Dockerfile",
+        "docker-compose.yml",
+        ".dockerignore"
+      ]
+    },
+    {
+      "source": "../combo-content/web/docker/",
+      "target": "./",
+      "condition": "(Docker && UseSplit)",
+      "include": [
+        "docker-compose.yml",
+        ".dockerignore"
+      ]
+    },
+    {
+      "source": "../combo-content/web/docker-split/",
+      "target": "./",
+      "condition": "(Docker && UseSplit)",
+      "include": [
+        "Dockerfile"
+      ]
+    },
+    {
+      "source": "../combo-content/web/models-web/",
+      "target": "Backend/Pnv.Combo.Web/Domain/",
+      "condition": "(!UseSplit)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/endpoints-services/",
+      "target": "Backend/Pnv.Combo.Web/Endpoints/",
+      "condition": "(!UseSplit && !UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/web/frontend-razor/",
+      "target": "Backend/Pnv.Combo.Web/Pages/",
+      "condition": "(UseRazorPages && !UseSplit && !UseCqrs)",
+      "include": [
+        "**/*"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills)",
+      "include": [
+        "architecture/**",
+        "async/**",
+        "avalonia-colors/**",
+        "avalonia-converters/**",
+        "avalonia-theming/**",
+        "clarifying-questions/**",
+        "code-sections/**",
+        "code-style/**",
+        "collections/**",
+        "error-handling/**",
+        "json-sourcegen/**",
+        "models-organization/**",
+        "paths/**",
+        "services-organization/**",
+        "trimming/**",
+        "view-organization/**",
+        "xaml/**",
+        "app-settings/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseDi && !UseScrutor))",
+      "include": [
+        "dependency-injection/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseScrutor))",
+      "include": [
+        "dependency-injection-scrutor/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseDi))",
+      "include": [
+        "options/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && UseDesktopLogging)",
+      "include": [
+        "logging/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseCommunityToolkit))",
+      "include": [
+        "mvvm-communitytoolkit/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseReactiveUI))",
+      "include": [
+        "mvvm-reactiveui/**",
+        "reactiveui-interactions/**",
+        "reactiveui-sourcegenerators/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (UseDesktopEfCore))",
+      "include": [
+        "ef-core-sqlite/**",
+        "ef-core-interceptors/**",
+        "infrastructure-organization/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && (Tests))",
+      "include": [
+        "testing/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills)",
+      "include": [
+        "architecture/**",
+        "async/**",
+        "avalonia-colors/**",
+        "avalonia-converters/**",
+        "avalonia-theming/**",
+        "clarifying-questions/**",
+        "code-sections/**",
+        "code-style/**",
+        "collections/**",
+        "error-handling/**",
+        "json-sourcegen/**",
+        "models-organization/**",
+        "paths/**",
+        "services-organization/**",
+        "trimming/**",
+        "view-organization/**",
+        "xaml/**",
+        "app-settings/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseDi && !UseScrutor))",
+      "include": [
+        "dependency-injection/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseScrutor))",
+      "include": [
+        "dependency-injection-scrutor/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseDi))",
+      "include": [
+        "options/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && UseDesktopLogging)",
+      "include": [
+        "logging/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseCommunityToolkit))",
+      "include": [
+        "mvvm-communitytoolkit/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseReactiveUI))",
+      "include": [
+        "mvvm-reactiveui/**",
+        "reactiveui-interactions/**",
+        "reactiveui-sourcegenerators/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (UseDesktopEfCore))",
+      "include": [
+        "ef-core-sqlite/**",
+        "ef-core-interceptors/**",
+        "infrastructure-organization/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && (Tests))",
+      "include": [
+        "testing/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills)",
+      "include": [
+        "endpoints/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && UseWebEfCore)",
+      "include": [
+        "ef-core-postgresql/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && UseCqrs)",
+      "include": [
+        "cqrs/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && Frontend != \"None\")",
+      "include": [
+        "frontend/**"
+      ]
+    },
+    {
+      "source": "../combo-content/skills/",
+      "target": "Skills/",
+      "condition": "(Skills && Secrets)",
+      "include": [
+        "secrets/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills)",
+      "include": [
+        "endpoints/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && UseWebEfCore)",
+      "include": [
+        "ef-core-postgresql/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && UseCqrs)",
+      "include": [
+        "cqrs/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && Frontend != \"None\")",
+      "include": [
+        "frontend/**"
+      ]
+    },
+    {
+      "source": "../combo-content/claude-skills/",
+      "target": ".claude/skills/",
+      "condition": "(Skills && Secrets)",
+      "include": [
+        "secrets/**"
+      ]
+    }
+  ],
+  "postActions": [
+    {
+      "condition": "(!SkipRestore)",
+      "description": "Восстановление пакетов NuGet.",
+      "manualInstructions": [
+        {
+          "text": "Выполните 'dotnet restore'."
+        }
+      ],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    }
+  ]
+}

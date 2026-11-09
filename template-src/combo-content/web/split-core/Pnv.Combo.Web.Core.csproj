@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Pnv.Combo.Web</RootNamespace>
+    <AssemblyName>Pnv.Combo.Web.Core</AssemblyName>
+  </PropertyGroup>
+</Project>

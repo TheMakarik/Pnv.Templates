@@ -1,0 +1,28 @@
+## Build results
+bin/
+obj/
+artifacts/
+*.nupkg
+*.snupkg
+
+## Rider / Visual Studio
+.idea/
+.vs/
+*.user
+*.suo
+*.userprefs
+
+## Test results
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+## Databases
+*.db
+*.db-shm
+*.db-wal
+
+## OS
+.DS_Store
+Thumbs.db

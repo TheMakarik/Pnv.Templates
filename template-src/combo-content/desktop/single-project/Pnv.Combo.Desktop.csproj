@@ -1,0 +1,77 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Pnv.Combo.Desktop</RootNamespace>
+    <AssemblyName>Pnv.Combo.Desktop</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="AvaloniaVersionToken" />
+    <PackageReference Include="Avalonia.Desktop" Version="AvaloniaVersionToken" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="AvaloniaVersionToken" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="AvaloniaVersionToken" />
+    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
+  </ItemGroup>
+
+<!--#if (UseCommunityToolkit) -->
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+  </ItemGroup>
+<!--#endif -->
+
+<!--#if (UseReactiveUI) -->
+  <ItemGroup>
+    <PackageReference Include="ReactiveUI.Avalonia" Version="12.0.3" />
+    <PackageReference Include="ReactiveUI.SourceGenerators" Version="3.2.0" />
+  </ItemGroup>
+<!--#endif -->
+
+<!--#if (UseDi) -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
+  </ItemGroup>
+<!--#endif -->
+
+<!--#if (UseRefit) -->
+  <ItemGroup>
+    <PackageReference Include="Refit" Version="16.4.0" />
+  </ItemGroup>
+<!--#endif -->
+
+<!--#if (UseDesktopLogging) -->
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="4.3.1" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="10.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+  </ItemGroup>
+<!--#endif -->
+
+<!--#if (UseScrutor) -->
+  <ItemGroup>
+    <PackageReference Include="Scrutor" Version="7.0.0" />
+  </ItemGroup>
+<!--#endif -->
+
+<!--#if (UseDesktopEfCore) -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
+  </ItemGroup>
+<!--#endif -->
+
+<!--#if (UseDi) -->
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+<!--#endif -->
+</Project>

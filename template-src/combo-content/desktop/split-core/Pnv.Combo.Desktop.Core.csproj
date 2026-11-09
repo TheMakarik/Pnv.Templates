@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Pnv.Combo.Desktop</RootNamespace>
+    <AssemblyName>Pnv.Combo.Desktop.Core</AssemblyName>
+  </PropertyGroup>
+</Project>

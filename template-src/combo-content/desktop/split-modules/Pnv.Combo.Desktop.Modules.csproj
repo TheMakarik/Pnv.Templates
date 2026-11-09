@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Pnv.Combo.Desktop</RootNamespace>
+    <AssemblyName>Pnv.Combo.Desktop.Modules</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Pnv.Combo.Desktop.Core/Pnv.Combo.Desktop.Core.csproj" />
+  </ItemGroup>
+
+<!--#if (UseRefit) -->
+  <ItemGroup>
+    <PackageReference Include="Refit" Version="16.4.0" />
+  </ItemGroup>
+<!--#endif -->
+</Project>

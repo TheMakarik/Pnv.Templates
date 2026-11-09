@@ -1,0 +1,8 @@
+namespace Pnv.Combo.Desktop.Options;
+
+public sealed class AppOptions
+{
+    public string Title { get; set; } = "Pnv.Combo.Desktop";
+    public int Width { get; set; } = 800;
+    public int Height { get; set; } = 450;
+}

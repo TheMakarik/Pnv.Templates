@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Solution>
+  <Folder Name="/Desktop/">
+    <Project Path="Desktop/Pnv.Combo.Desktop/Pnv.Combo.Desktop.csproj" />
+<!--#if (SplitProjects) -->
+    <Project Path="Desktop/Pnv.Combo.Desktop.Core/Pnv.Combo.Desktop.Core.csproj" />
+    <Project Path="Desktop/Pnv.Combo.Desktop.Modules/Pnv.Combo.Desktop.Modules.csproj" />
+<!--#endif -->
+<!--#if (UseDesktopEfCore && SplitProjects) -->
+    <Project Path="Desktop/Pnv.Combo.Desktop.Infrastructure/Pnv.Combo.Desktop.Infrastructure.csproj" />
+<!--#endif -->
+  </Folder>
+  <Folder Name="/Backend/">
+<!--#if (UseSplit && UseWebEfCore) -->
+    <Project Path="Backend/Pnv.Combo.Web.Api/Pnv.Combo.Web.Api.csproj" />
+    <Project Path="Backend/Pnv.Combo.Web.Core/Pnv.Combo.Web.Core.csproj" />
+    <Project Path="Backend/Pnv.Combo.Web.Infrastructure/Pnv.Combo.Web.Infrastructure.csproj" />
+<!--#endif -->
+<!--#if (UseSplit && !UseWebEfCore) -->
+    <Project Path="Backend/Pnv.Combo.Web.Api/Pnv.Combo.Web.Api.csproj" />
+    <Project Path="Backend/Pnv.Combo.Web.Core/Pnv.Combo.Web.Core.csproj" />
+<!--#endif -->
+<!--#if (!UseSplit) -->
+    <Project Path="Backend/Pnv.Combo.Web/Pnv.Combo.Web.csproj" />
+<!--#endif -->
+  </Folder>
+<!--#if (UseBlazor) -->
+  <Folder Name="/Frontend/">
+    <Project Path="Frontend/Pnv.Combo.Web.Frontend/Pnv.Combo.Web.Frontend.csproj" />
+  </Folder>
+<!--#endif -->
+<!--#if (Tests) -->
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Pnv.Combo.Desktop.Tests/Pnv.Combo.Desktop.Tests.csproj" />
+    <Project Path="Tests/Pnv.Combo.Web.Tests/Pnv.Combo.Web.Tests.csproj" />
+  </Folder>
+<!--#endif -->
+</Solution>

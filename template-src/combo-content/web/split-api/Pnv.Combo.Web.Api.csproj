@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Pnv.Combo.Web</RootNamespace>
+    <AssemblyName>Pnv.Combo.Web.Api</AssemblyName>
+<!--#if (Secrets) -->
+    <UserSecretsId>5f2b8c3e-4a1d-4e6f-9b7c-2d8a1f4e6b90</UserSecretsId>
+<!--#endif -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Pnv.Combo.Web.Core/Pnv.Combo.Web.Core.csproj" />
+<!--#if (UseWebEfCore) -->
+    <ProjectReference Include="../Pnv.Combo.Web.Infrastructure/Pnv.Combo.Web.Infrastructure.csproj" />
+<!--#endif -->
+  </ItemGroup>
+
+<!--#if (UseWebLogging) -->
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="4.3.1" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="10.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+  </ItemGroup>
+<!--#endif -->
+</Project>

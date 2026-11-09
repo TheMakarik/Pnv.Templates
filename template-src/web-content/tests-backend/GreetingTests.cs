@@ -4,6 +4,9 @@ using Xunit;
 #if (UseCqrs)
 using MediatR;
 using Pnv.Web.Application.Features.Greetings;
+#if (!UseEfCore)
+using Pnv.Web.Infrastructure;
+#endif
 #else
 using Pnv.Web.Domain;
 using Pnv.Web.Application;

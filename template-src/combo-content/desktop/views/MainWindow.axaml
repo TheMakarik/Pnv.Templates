@@ -1,0 +1,36 @@
+<Window
+    x:Class="Pnv.Combo.Desktop.View.MainWindow"
+    x:DataType="vm:MainViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:api="using:Pnv.Combo.Desktop.Api"
+    xmlns:vm="using:Pnv.Combo.Desktop.ViewModels"
+    Title="Pnv.Combo.Desktop"
+    Width="800"
+    Height="450"
+    WindowStartupLocation="CenterScreen">
+    <Grid RowDefinitions="*,Auto,Auto" Margin="24">
+        <ListBox
+            Grid.Row="0"
+            ItemsSource="{Binding Greetings}">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="api:GreetingDto">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Text="{Binding Text}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBox
+            Grid.Row="1"
+            Margin="0,12,0,12"
+            Watermark="Текст приветствия"
+            Text="{Binding NewGreetingText}" />
+        <Button
+            Grid.Row="2"
+            HorizontalAlignment="Right"
+            Command="{Binding AddCommand}"
+            Content="Добавить" />
+    </Grid>
+</Window>
